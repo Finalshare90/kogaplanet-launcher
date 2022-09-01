@@ -1,0 +1,34 @@
+
+james_IDLE.png
+size: 64, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Idle_Costas
+  rotate: false
+  xy: 11, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+Idle_Direita
+  rotate: false
+  xy: 2, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+Idle_Esquerda
+  rotate: false
+  xy: 29, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+Idle_Frente
+  rotate: false
+  xy: 20, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1

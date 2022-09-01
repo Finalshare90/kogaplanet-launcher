@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Isaac Martins\\Documents\\1-Programacao\\Arquivos java\\KGP\\Area de trabalho\\KogaPlanetLauncher\\android\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Isaac Martins\\Documents\\1-Programacao\\Arquivos java\\KGP\\Area de trabalho\\KogaPlanetLauncher\\android\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endColumns": "55",
+                        "endOffsets": "107"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "111",
+                        "endColumns": "55",
+                        "endOffsets": "162"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Isaac Martins\\Documents\\1-Programacao\\Arquivos java\\KGP\\Area de trabalho\\KogaPlanetLauncher\\android\\res\\values\\color.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
