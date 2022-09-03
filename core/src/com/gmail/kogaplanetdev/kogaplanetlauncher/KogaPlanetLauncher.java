@@ -138,12 +138,11 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		fpsLogger.log();
 		
 		entitiesBatch.begin();
-		ui.update();
 		
 		// Desenha a logo do KGP
 		KogaSprite.draw(entitiesBatch);
 		mapDrawer.render();
-		
+		ui.update();
 		
 		entitiesBatch.end();
 		
