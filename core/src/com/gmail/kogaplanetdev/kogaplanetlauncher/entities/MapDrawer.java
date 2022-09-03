@@ -42,7 +42,7 @@ public class MapDrawer {
 		
 		tileTexture = new ArrayList<Texture>();
 		for (int c = 0; c < reader.getTiles().size(); c++) {
-			tileTexture.add(new Texture(dir + File.separator + reader.getTiles().get(c).getTexture()));		
+		 tileTexture.add(new Texture(dir + File.separator + reader.getTiles().get(c).getTexture()));		
 		}
 		reader.tests();
 	}
@@ -57,31 +57,38 @@ public class MapDrawer {
 		
 		for(int count = 0; count < map.size(); count++){
 			
-			
+		System.out.println("tamanho do mapa: " + map.size());
+		System.out.println("tile atual: " + map.get(count));
 			if(!map.get(mapPosition).equals(";")){
+				
 				tiles.add(new Tile());
+				System.out.println("tile size: " + tiles.size());
 				tiles.get(mapPosition).y = currentTileY;
-				tiles.get(mapPosition).x = currentTileX + tileTexture.get(0).getWidth();
+ 				tiles.get(mapPosition).x = currentTileX + tileTexture.get(0).getWidth();
 				currentTileX = tiles.get(mapPosition).x;
-				System.out.println(tiles.get(mapPosition).y + " " + tiles.get(mapPosition).x);
+				System.out.println("tile pos: " + tiles.get(mapPosition).y + " " + tiles.get(mapPosition).x + "\n");
 				mapPosition++;
 				}else{
 				currentTileX = 0;
 				currentTileY = currentTileY - tileTexture.get(0).getHeight();
-				System.out.println(currentTileY);
 				map.remove(mapPosition);
 			}			
-			
+			System.out.println("count: " + count);
+			System.out.println("mapPos: " + mapPosition + "\n");
 		}
+		/*
 		for(int e = 0; tiles.size() > e; e++){
 				System.out.println(tiles.get(e).x +" " + tiles.get(e).y);
 				System.out.println(map.get(e));
 			}
+		*/
 	}
 	
 	public void loadTextures() {
 		
 		ArrayList<Object> map = reader.getMap();
+		
+		System.out.println(tiles.size());
 		
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
 			tiles.get(mapSymbol).texture = tileTexture.get(
