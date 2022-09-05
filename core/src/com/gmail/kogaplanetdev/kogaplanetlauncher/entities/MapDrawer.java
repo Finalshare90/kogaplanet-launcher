@@ -84,15 +84,17 @@ public class MapDrawer {
 		*/
 	}
 	
-	public void loadTextures() {
+	public void loadBodies() {
 		
 		ArrayList<Object> map = reader.getMap();
 		
-		System.out.println(tiles.size());
 		
+		System.out.println(tiles.size());
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
-			tiles.get(mapSymbol).texture = tileTexture.get(
-					Integer.parseInt((String)map.get(mapSymbol)));
+			int currentSymbol = Integer.parseInt((String)map.get(mapSymbol));		
+			tiles.get(mapSymbol).texture = tileTexture.get(currentSymbol);
+				tiles.get(currentSymbol).isCollidable = reader.getTiles().get(currentSymbol).isCollidable();
+				System.out.println(currentSymbol + " " + tiles.get(currentSymbol).isCollidable);
 		}
 	}
 	
