@@ -93,8 +93,9 @@ public class MapDrawer {
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
 			int currentSymbol = Integer.parseInt((String)map.get(mapSymbol));		
 			tiles.get(mapSymbol).texture = tileTexture.get(currentSymbol);
-				tiles.get(currentSymbol).isCollidable = reader.getTiles().get(currentSymbol).isCollidable();
+				tiles.get(mapSymbol).isCollidable = reader.getTiles().get(currentSymbol).isCollidable();
 				System.out.println(currentSymbol + " " + tiles.get(currentSymbol).isCollidable);
+				tiles.get(mapSymbol).createBody();
 		}
 	}
 	

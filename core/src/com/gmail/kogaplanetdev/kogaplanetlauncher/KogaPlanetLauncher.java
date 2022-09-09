@@ -79,9 +79,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		logoKGP = new Texture("logos/256x_kgp.png");
 		KogaSprite = new Sprite(logoKGP);
 		
-		//Mover para uma classe de entidades
-		rectangle = new Rectangle(KogaSprite.getX(), KogaSprite.getY(),KogaSprite.getWidth(),KogaSprite.getHeight());
-		
+	
 		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
 		p1 = new Player(entitiesBatch, atlas);
 		String SpritesNames[] = {"Idle_Costas","Idle_Frente","Idle_Direita","Idle_Esquerda"};
@@ -102,17 +100,6 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		
 		// Criação do mundo
 		WORLD = new World(new Vector2(0 , 0), true);		
-		
-		//criação do corpo da logo, só criei aqui para fazer testes.
-		bodyDef = new BodyDef();
-		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(rectangle.x + 128, rectangle.y + 128);
-		body = WORLD.createBody(bodyDef);
-		poly = new PolygonShape();
-		poly.setAsBox(rectangle.width/2, rectangle.height/2);
-		fixtureDef = new FixtureDef();
-		fixtureDef.shape = poly;
-		fixture = body.createFixture(fixtureDef);
 		
 		// cria corpo do player.
 		p1.createBody();
