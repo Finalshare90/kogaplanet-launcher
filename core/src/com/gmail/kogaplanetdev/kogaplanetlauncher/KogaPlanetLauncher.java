@@ -1,17 +1,8 @@
 package com.gmail.kogaplanetdev.kogaplanetlauncher;
 
-import java.awt.JobAttributes;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,24 +11,15 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.*;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.InterfaceMain;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.g2d.freetype.*;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-
-import finalshare.tileReader.essentials.Loader;
-import finalshare.tileReader.essentials.Reader;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
@@ -48,7 +30,6 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	// Mover para uma classe de entidade
 	Rectangle rectangle;
 	FPSLogger fpsLogger;
-	
 	
 	// Assets
 	Texture logoKGP;
@@ -88,15 +69,12 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		for(int count = 0; count < SpritesNames.length ; count++){
 		p1.setAtlasSprites(count, SpritesNames[count]);
 				
-		
 		// Classe de User interface:)
 		ui = new InterfaceMain(entitiesBatch, p1);
-		
 		ui.createWidgetComponents();
 		
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
-		
 		
 		// Criação do mundo
 		WORLD = new World(new Vector2(0 , 0), true);		
@@ -104,14 +82,13 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		// cria corpo do player.
 		p1.createBody();
 		
-		
 		// Sistema de tiles
 		mapDrawer = new MapDrawer(entitiesBatch);
 		mapDrawer.verify();
 		mapDrawer.scan();
-		
 		mapDrawer.calcTilePosition();
 		mapDrawer.loadBodies();
+		
 		}
 	}
 
@@ -127,7 +104,6 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		entitiesBatch.begin();
 		
 		// Desenha a logo do KGP
-		KogaSprite.draw(entitiesBatch);
 		mapDrawer.render();
 		ui.update();
 		
