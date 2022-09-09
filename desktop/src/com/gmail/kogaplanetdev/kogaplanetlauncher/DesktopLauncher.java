@@ -20,7 +20,7 @@ public class DesktopLauncher {
 		//config relacionadas ao programa em si
 		config.setMaximized(true);
 		config.setWindowIcon("logos/256x_kgp.png");
-		config.setTitle("KogaPlanet Launcher 2.0.0 pre-alpha(Build BRA shortHair) " + jokes.chooseAjoke());	
+		config.setTitle("KogaPlanet Launcher 2.1.1 pre-alpha(Build BRA shortHair) " + jokes.chooseAjoke());	
 		
 		//inicia uma nova instancia do programa, NÃO TOCAR
 		new Lwjgl3Application(new KogaPlanetLauncher(), config);
