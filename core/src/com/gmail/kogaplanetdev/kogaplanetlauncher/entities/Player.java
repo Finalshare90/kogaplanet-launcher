@@ -101,6 +101,7 @@ public class Player{
 		 // Tira a velocidade residual quando nenhuma tecla é pressionada
 		 body.setLinearVelocity(0, 0);
 		 
+		 
 		 // Da update na posição do sprite na tela.
 		 position = body.getPosition();	
 		 
@@ -108,7 +109,7 @@ public class Player{
 		
 		 if(isPressedW == true){
 			//teste, pode bugar o jogo
-			body.setLinearVelocity(0, 100);
+			body.setLinearVelocity(body.getLinearVelocity().x, 100);
 			 
 			sprite = atlas.createSprite(AtlasSprites[0]);
 		 
@@ -119,7 +120,7 @@ public class Player{
 	 	 if (isPressedS == true) {
 	 		 
 	 		//teste, pode bugar o jogo.
-	 		body.setLinearVelocity(0, -100);
+	 		body.setLinearVelocity(body.getLinearVelocity().x, -100);
 	 		
 	 		sprite = atlas.createSprite(AtlasSprites[1]);
 	 		
@@ -130,7 +131,7 @@ public class Player{
 	 	 if (isPressedD == true) {
 	 		
 	 		//teste pode bugar o jogo
-		 	body.setLinearVelocity(100, 0);
+		 	body.setLinearVelocity(100, body.getLinearVelocity().y);
 	 	
 	 		sprite = atlas.createSprite(AtlasSprites[2]);
 	 		
@@ -141,7 +142,7 @@ public class Player{
 	 	 if (isPressedA == true) {
 	 		 
 	 	    //teste, pode bugar o jogo.
-	 	    body.setLinearVelocity(-100, 0);
+	 	    body.setLinearVelocity(-100, body.getLinearVelocity().y);
 	 		
 	 		sprite = atlas.createSprite(AtlasSprites[3]);
 	 		

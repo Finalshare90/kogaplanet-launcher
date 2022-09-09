@@ -25,7 +25,7 @@ public class Tile {
 	}
 
 	public void createBody(){
-		if(isCollidable == true){
+		if(isCollidable){
 			bodyDef = new BodyDef();
 			bodyDef.type = BodyType.StaticBody;
 			bodyDef.position.set(x + 32, y + 32);
