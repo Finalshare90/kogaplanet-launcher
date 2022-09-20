@@ -16,6 +16,7 @@ public class DesktopLauncher {
 		
 		//config de gráficos e perfomance
 		config.setForegroundFPS(60);
+		config.setDecorated(false);
 		
 		//config relacionadas ao programa em si
 		config.setMaximized(true);
