@@ -88,6 +88,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		mapDrawer.scan();
 		mapDrawer.calcTilePosition();
 		mapDrawer.loadBodies();
+		mapDrawer.loadTextures();
 		
 		}
 	}

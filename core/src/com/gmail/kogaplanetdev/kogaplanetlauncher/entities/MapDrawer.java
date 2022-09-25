@@ -12,7 +12,7 @@ public class MapDrawer {
 	ArrayList<Texture> tileTexture;
 	ArrayList<Tile> tiles = new ArrayList<Tile>();	
 	String textures;
-	
+	Texture blank = new Texture("misc/blank.png");
 	
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	File.separator + "KogaPlanetLauncher"+ File.separator + "games";
@@ -51,7 +51,6 @@ public class MapDrawer {
 		
 		ArrayList<Object> map = reader.getMap();
 		
-		int mapPosition = 0;
 		int currentTileX = 0;
 		int currentTileY = 0;
 		
@@ -59,22 +58,23 @@ public class MapDrawer {
 			
 		System.out.println("tamanho do mapa: " + map.size());
 		System.out.println("tile atual: " + map.get(count));
-			if(!map.get(mapPosition).equals(";")){
+			if(!map.get(count).equals(";")){
 				
 				tiles.add(new Tile());
 				System.out.println("tile size: " + tiles.size());
-				tiles.get(mapPosition).y = currentTileY;
- 				tiles.get(mapPosition).x = currentTileX + tileTexture.get(0).getWidth();
-				currentTileX = tiles.get(mapPosition).x;
-				System.out.println("tile pos: " + tiles.get(mapPosition).y + " " + tiles.get(mapPosition).x + "\n");
-				mapPosition++;
+				tiles.get(count).y = currentTileY;
+ 				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
+				currentTileX = tiles.get(count).x;
+				//System.out.println("tile pos: " + tiles.get(mapPosition).y + " " + tiles.get(mapPosition).x + "\n");
 				}else{
+				tiles.add(new Tile());
+				tiles.get(count).y = currentTileY;
+ 				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
 				currentTileX = 0;
 				currentTileY = currentTileY - tileTexture.get(0).getHeight();
-				map.remove(mapPosition);
-			}			
-			System.out.println("count: " + count);
-			System.out.println("mapPos: " + mapPosition + "\n");
+				}			
+			System.out.println("count: " + count + "\n");
+		
 		}
 		/*
 		for(int e = 0; tiles.size() > e; e++){
@@ -84,18 +84,34 @@ public class MapDrawer {
 		*/
 	}
 	
+	public void loadTextures() {
+
+		ArrayList<Object> map = reader.getMap();
+		System.out.println(tiles.size());
+
+		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
+			if(!map.get(mapSymbol).equals(";")){
+			tiles.get(mapSymbol).texture = tileTexture.get(
+					Integer.parseInt((String)map.get(mapSymbol)));
+				}else{
+					tiles.get(mapSymbol).texture = blank;
+				}
+			}
+		}
+	
 	public void loadBodies() {
 		
 		ArrayList<Object> map = reader.getMap();
 		
-		
 		System.out.println(tiles.size());
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
+			if(!map.get(mapSymbol).equals(";")){
 			int currentSymbol = Integer.parseInt((String)map.get(mapSymbol));		
 			tiles.get(mapSymbol).texture = tileTexture.get(currentSymbol);
 				tiles.get(mapSymbol).isCollidable = reader.getTiles().get(currentSymbol).isCollidable();
 				System.out.println(currentSymbol + " " + tiles.get(currentSymbol).isCollidable);
 				tiles.get(mapSymbol).createBody();
+			}
 		}
 	}
 	
