@@ -16,7 +16,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '2.1.2 pre-alpha (Build BRA Shorthair)'
+    version = '2.1.3 pre-alpha (Build BRA Shorthair)'
     ext {
         appName = "Kogaplanet-Laucher"
         gdxVersion = '1.10.0'
