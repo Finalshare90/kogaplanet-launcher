@@ -23,7 +23,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
-	
 	// entidades
 	Player p1;
 	
@@ -68,7 +67,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		// Boas práticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
 		p1.setAtlasSprites(count, SpritesNames[count]);
-				
+		}
 		// Classe de User interface:)
 		ui = new InterfaceMain(entitiesBatch, p1);
 		ui.createWidgetComponents();
@@ -90,7 +89,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		mapDrawer.loadBodies();
 		mapDrawer.loadTextures();
 		
-		}
+		
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		entitiesBatch.end();
 		
 		//Após o fim do Batch acima, o player começa a sua própria instancia de renderização.
-		p1.update(rectangle);
+		p1.update();
 		
 		
 		// update de UI para debug, ele não precisa estar em um fluxo Batch.
@@ -120,10 +119,8 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	}
 	@Override
 	public void dispose () {
-		
 		entitiesBatch.dispose();
 		poly.dispose();
 		ui.dispose();
-		
 	}
 }

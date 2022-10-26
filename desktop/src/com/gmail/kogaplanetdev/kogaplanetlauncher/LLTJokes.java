@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class LLTJokes {
 	
-	//I dont even know why i didnt use a I/O reader in a separated file to do that, but who cares?
+	//I don't even know why i didn't used a I/O reader in a separated file to do that, but who cares?
 	
 	String jokes[] = {"Rogerio tech","Waldir Braz","Watch out for James!",
 					 "Did you know that to open a door, just open it",
@@ -19,8 +19,9 @@ public class LLTJokes {
 					 "did you know that Finalshare is coffee powered? the last coffee incident was very unpleasant.",
 					 "It is a bird? is it an airplane? no, it's a goddamn bug in the android version",
 					 "When you're in the fight, don't be useless", "If adam and eve fought would it be a world war?",
-					 "If Pinocchio says that his nose will grow, what happens?","You who ate Genoto's pie?",
-					 "Was the Genoto's pie delicious?"
+					 "If Pinocchio says that his nose will grow, what happens?", "3l was probably an excuse for Final"
+					 + "not to have to add more content, who knows?", "LunarLutte Team warns: the game runs fine, at"
+					 + "least on testing machines"
 					};
 	Random rnd = new Random();
 	

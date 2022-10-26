@@ -40,7 +40,7 @@ public class Player{
 	
 	
 	//gambiarra pura, não toque, só saiba que é os listerners de teclas 
-	public boolean isPressedW,isPressedS, isPressedA,isPressedD;
+	public boolean isPressedW, isPressedS, isPressedA, isPressedD;
 
 	
 	 public Player(SpriteBatch Batch, TextureAtlas atlas) {
@@ -74,16 +74,13 @@ public class Player{
 	  Ah, ele também é o que escuta as teclas do jogador, e faz toda a parte da
 	  interação jogo-úsuario
 	 */
-	public void update(Rectangle r){		
-		
-		
+	public void update(){		
 		/*
 		 sempre que for editar uma tecla, ou desenhar algo novo em player, coloque
 		 dentro do fluxo "Batch".
-		*/
-		
+		*/	
 		Batch.begin();
-		
+	
 		//update da camera
 		Batch.setProjectionMatrix(cam.combined);
 		cam.position.x = position.x;
@@ -106,48 +103,30 @@ public class Player{
 		 position = body.getPosition();	
 		 
 		 //verificações de teclas, por enquanto esse sistema vai ficar assim, pretendo melhora-lo no futuro.
-		
-		 if(isPressedW == true){
-			//teste, pode bugar o jogo
+		 if(isPressedW){
+			// move o BODY do player, mas não move necessariamente o Sprite, a posição dele é diretamente vinculada com a do body
 			body.setLinearVelocity(body.getLinearVelocity().x, 100);
 			 
+			//define o sprite atual com base no input
 			sprite = atlas.createSprite(AtlasSprites[0]);
-		 
-			//fins de debug, vulnerabilidade terrivel se KGP for lançado com isso aqui dentro do código
-		 	System.out.println("W");
-		 }
+		 	}
 	 
-	 	 if (isPressedS == true) {
-	 		 
-	 		//teste, pode bugar o jogo.
+	 	 if (isPressedS) {	 		 
 	 		body.setLinearVelocity(body.getLinearVelocity().x, -100);
 	 		
 	 		sprite = atlas.createSprite(AtlasSprites[1]);
-	 		
-	 		//fins de debug, vulnerabilidade terrivel se KGP for lançado com isso aqui dentro do código
-		 	System.out.println("S");
 		 }
 	 
-	 	 if (isPressedD == true) {
-	 		
-	 		//teste pode bugar o jogo
+	 	 if (isPressedD) {
 		 	body.setLinearVelocity(100, body.getLinearVelocity().y);
 	 	
-	 		sprite = atlas.createSprite(AtlasSprites[2]);
-	 		
-	 		//fins de debug, vulnerabilidade terrivel se KGP for lançado com isso aqui dentro do código
-		 	System.out.println("D");
-		 }
+	 		sprite = atlas.createSprite(AtlasSprites[2]);	
+	 	 }
 	 	 
-	 	 if (isPressedA == true) {
-	 		 
-	 	    //teste, pode bugar o jogo.
-	 	    body.setLinearVelocity(-100, body.getLinearVelocity().y);
+	 	 if (isPressedA) {
+	 		body.setLinearVelocity(-100, body.getLinearVelocity().y);
 	 		
 	 		sprite = atlas.createSprite(AtlasSprites[3]);
-	 		
-	 		//fins de debug, vulnerabilidade terrivel se KGP for lançado com isso aqui dentro do código
-		 	System.out.println("A");
 		 }
 	 	 
 	 	 /* 

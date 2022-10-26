@@ -51,6 +51,8 @@ public class MapDrawer {
 		
 		ArrayList<Object> map = reader.getMap();
 		
+		
+		
 		int currentTileX = 0;
 		int currentTileY = 0;
 		
