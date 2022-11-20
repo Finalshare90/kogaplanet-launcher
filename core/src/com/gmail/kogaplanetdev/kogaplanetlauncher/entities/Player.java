@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,6 +32,10 @@ public class Player{
 	private Rectangle rectangle;
 	private Vector2 position;
 	public Viewport viewport;
+	
+	// Esses atributos só vão ser usados no CollsionHandler.
+	HashMap<String, Object> fixtureData = new HashMap<>();
+	
 	
 	
 	//física
@@ -66,8 +73,44 @@ public class Player{
 		//cria um retangulo que vai servir como "detector de colisão"
 		rectangle = new Rectangle(position.x, position.y, sprite.getWidth() + 15, sprite.getHeight() + 25);
 		viewport = new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
+		
+		// Cria o corpo e seu formato
+		createBody();
+		
+		// Atribui ao formato do corpo alguns dados para ser usado no Handler de colisão.
+		attributesFactory("isAlive",true);
+		attributesFactory("canBeKilled", true);
+		setFixtureData();
 	 }
 	 
+	 private void attributesFactory(String attributeName, Boolean value){
+		 fixtureData.put(attributeName, value);
+	 }
+	 
+	 private void setFixtureData(){
+		// Define os dados de úsuario dessa fixture, só pode 1, por isso fiz um hashmap.
+		fixture.setUserData(fixtureData);
+	}
+	 
+	 private void createBody() {
+		
+		// Cria um corpo com aas especificações necessarias.
+		bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(getRectangle().x,getRectangle().y);
+		body = KogaPlanetLauncher.WORLD.createBody(bodyDef);
+		poly = new PolygonShape();
+		poly.setAsBox(getRectangle().width/2,getRectangle().height/2);
+		
+		// Cria acessorios ao corpo, como o formato que ele tem.
+		fixtureDef = new FixtureDef();
+		fixtureDef.shape = poly;
+		fixture = body.createFixture(fixtureDef);
+		
+		// Impede a rotação dele.
+		body.setFixedRotation(true);
+		
+	}
 	 
 	 /*
 	  Método verboso que vai deixar o Render mais "clean".
@@ -80,7 +123,7 @@ public class Player{
 		 dentro do fluxo "Batch".
 		*/	
 		Batch.begin();
-	
+		
 		//update da camera
 		Batch.setProjectionMatrix(cam.combined);
 		cam.position.x = position.x;
@@ -95,9 +138,12 @@ public class Player{
 		 isPressedD = Gdx.input.isKeyPressed(Keys.D); 
 		 isPressedA = Gdx.input.isKeyPressed(Keys.A);
 		 
+		 isAlive();
+		 
 		 // Tira a velocidade residual quando nenhuma tecla é pressionada
 		 body.setLinearVelocity(0, 0);
 		 
+		
 		 
 		 // Da update na posição do sprite na tela.
 		 position = body.getPosition();	
@@ -137,31 +183,14 @@ public class Player{
 	 	Batch.end();
 	
 	}
-	 
-
-	
-	
-	public void createBody() {
-		
-		// Cria um corpo com aas especificações necessarias.
-		bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(getRectangle().x,getRectangle().y);
-		body = KogaPlanetLauncher.WORLD.createBody(bodyDef);
-		poly = new PolygonShape();
-		poly.setAsBox(getRectangle().width/2,getRectangle().height/2);
-		
-		// Cria acessorios ao corpo, como o formato que ele tem.
-		fixtureDef = new FixtureDef();
-		fixtureDef.shape = poly;
-		fixture = body.createFixture(fixtureDef);
-		
-		// Impede a rotação dele.
-		body.setFixedRotation(true);
-		
+	private void isAlive(){
+		if(!(Boolean)fixtureData.get("isAlive")) {
+			body.setTransform(0, 0, 0);
+			fixtureData.replace("isAlive", true);
+		}
 	}
 	
-	
+
 	/*
 	 Esse merece um comentario engraçaralho só para ele:
 	 Gambiarra a moda Final de qualidade, tu basicamente coloca um número de onde que o atlasSprites

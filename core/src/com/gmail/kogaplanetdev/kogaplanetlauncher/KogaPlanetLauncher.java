@@ -49,7 +49,9 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
    
 	@Override
 	public void create () {
-			
+		// Criação do mundo
+		WORLD = new World(new Vector2(0 , 0), true);	
+		
 		// Só para usar como efeito de comparação, inutil, mas legal deixar
 		fpsLogger = new FPSLogger();
 		
@@ -75,21 +77,17 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
 		
-		// Criação do mundo
-		WORLD = new World(new Vector2(0 , 0), true);		
 		
-		// cria corpo do player.
-		p1.createBody();
+		
 		
 		// Sistema de tiles
 		mapDrawer = new MapDrawer(entitiesBatch);
-		mapDrawer.verify();
-		mapDrawer.scan();
-		mapDrawer.calcTilePosition();
+		mapDrawer.scanFile();
+		mapDrawer.tileFactory();
 		mapDrawer.loadBodies();
 		mapDrawer.loadTextures();
 		
-		
+		WORLD.setContactListener(new com.gmail.kogaplanetdev.kogaplanetlauncher.entities.CollisionHandler());
 	}
 
 	@Override

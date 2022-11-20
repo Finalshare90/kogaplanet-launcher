@@ -20,7 +20,7 @@ public class LLTJokes {
 					 "It is a bird? is it an airplane? no, it's a goddamn bug in the android version",
 					 "When you're in the fight, don't be useless", "If adam and eve fought would it be a world war?",
 					 "If Pinocchio says that his nose will grow, what happens?", "3l was probably an excuse for Final"
-					 + "not to have to add more content, who knows?", "LunarLutte Team warns: the game runs fine, at"
+					 + " not to have to add more content, who knows?", "LunarLutte Team warns: the game runs fine, at"
 					 + "least on testing machines"
 					};
 	Random rnd = new Random();

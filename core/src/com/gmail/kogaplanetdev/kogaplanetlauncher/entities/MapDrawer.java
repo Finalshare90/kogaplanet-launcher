@@ -20,10 +20,11 @@ public class MapDrawer {
 	
 	public MapDrawer(SpriteBatch batch){
 		this.batch = batch;
+		verifyDirectory();
 	}
 	
 	
-	public void verify() {
+	private void verifyDirectory() {
 	System.out.println(dir);
 		File file = new File(dir);
 		if(file.exists()) {
@@ -35,56 +36,48 @@ public class MapDrawer {
 		}
 	}
 	
-	public void scan(){
+	public void scanFile(){
+		
+		// Cria a instância do leitor e lê as texturas e os "bits" de cada tile no 3ml.
 		this.reader = new Reader(dir + File.separator + "currentMap");
-		try { reader.scan();	
+		
+		try {
+			reader.scan();	
 		} catch (Exception e) {e.printStackTrace();}
 		
+		// Gera o path de cada textura
+		texturesFactory();
+	}
+	
+	private void texturesFactory(){
 		tileTexture = new ArrayList<Texture>();
 		for (int c = 0; c < reader.getTiles().size(); c++) {
 		 tileTexture.add(new Texture(dir + File.separator + reader.getTiles().get(c).getTexture()));		
 		}
-		reader.tests();
 	}
 	
-	public void calcTilePosition(){			
+	public void tileFactory(){			
 		
 		ArrayList<Object> map = reader.getMap();
-		
-		
 		
 		int currentTileX = 0;
 		int currentTileY = 0;
 		
 		for(int count = 0; count < map.size(); count++){
-			
-		System.out.println("tamanho do mapa: " + map.size());
-		System.out.println("tile atual: " + map.get(count));
-			if(!map.get(count).equals(";")){
-				
+			if(!map.get(count).equals(";")){			
 				tiles.add(new Tile());
-				System.out.println("tile size: " + tiles.size());
 				tiles.get(count).y = currentTileY;
  				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
 				currentTileX = tiles.get(count).x;
-				//System.out.println("tile pos: " + tiles.get(mapPosition).y + " " + tiles.get(mapPosition).x + "\n");
 				}else{
 				tiles.add(new Tile());
 				tiles.get(count).y = currentTileY;
  				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
 				currentTileX = 0;
 				currentTileY = currentTileY - tileTexture.get(0).getHeight();
-				}			
-			System.out.println("count: " + count + "\n");
-		
+				}
 		}
-		/*
-		for(int e = 0; tiles.size() > e; e++){
-				System.out.println(tiles.get(e).x +" " + tiles.get(e).y);
-				System.out.println(map.get(e));
-			}
-		*/
-	}
+		}
 	
 	public void loadTextures() {
 
