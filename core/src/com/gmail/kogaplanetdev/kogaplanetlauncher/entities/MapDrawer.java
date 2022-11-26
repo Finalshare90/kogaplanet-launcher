@@ -36,7 +36,14 @@ public class MapDrawer {
 		}
 	}
 	
-	public void scanFile(){
+	public void loadMap() {
+		scanFile();
+		tileFactory();
+		loadBodies();
+		loadTextures();
+	}
+	
+	private void scanFile(){
 		
 		// Cria a instância do leitor e lê as texturas e os "bits" de cada tile no 3ml.
 		this.reader = new Reader(dir + File.separator + "currentMap");
@@ -56,7 +63,9 @@ public class MapDrawer {
 		}
 	}
 	
-	public void tileFactory(){			
+	
+	
+	private void tileFactory(){			
 		
 		ArrayList<Object> map = reader.getMap();
 		
@@ -79,7 +88,7 @@ public class MapDrawer {
 		}
 		}
 	
-	public void loadTextures() {
+	private void loadTextures() {
 
 		ArrayList<Object> map = reader.getMap();
 		System.out.println(tiles.size());
@@ -94,7 +103,7 @@ public class MapDrawer {
 			}
 		}
 	
-	public void loadBodies() {
+	private void loadBodies() {
 		
 		ArrayList<Object> map = reader.getMap();
 		
@@ -110,7 +119,7 @@ public class MapDrawer {
 		}
 	}
 	
-	public void render(){
+	public void renderMap(){
 		for(int count = 0; count < tiles.size(); count++){
 			batch.draw(tiles.get(count).texture, tiles.get(count).x, tiles.get(count).y);
 		}

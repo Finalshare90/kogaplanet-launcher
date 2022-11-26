@@ -2,15 +2,12 @@ package com.gmail.kogaplanetdev.kogaplanetlauncher;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.*;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.InterfaceMain;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,6 +17,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
+import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.Player;
+import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.InterfaceMain;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
@@ -40,7 +41,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	
     // Physics go brrr haha
     public static World WORLD;
-    BodyDef bodyDef;  
+    BodyDef bodyDef;
     PolygonShape poly;
     Body body;
     FixtureDef fixtureDef;
@@ -66,26 +67,22 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		p1 = new Player(entitiesBatch, atlas);
 		String SpritesNames[] = {"Idle_Costas","Idle_Frente","Idle_Direita","Idle_Esquerda"};
 		p1.create(200, 200, SpritesNames[1]);
+		
 		// Boas práticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
 		p1.setAtlasSprites(count, SpritesNames[count]);
 		}
+		
 		// Classe de User interface:)
 		ui = new InterfaceMain(entitiesBatch, p1);
 		ui.createWidgetComponents();
-		
+
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
-		
-		
-		
-		
+
 		// Sistema de tiles
 		mapDrawer = new MapDrawer(entitiesBatch);
-		mapDrawer.scanFile();
-		mapDrawer.tileFactory();
-		mapDrawer.loadBodies();
-		mapDrawer.loadTextures();
+		mapDrawer.loadMap();
 		
 		WORLD.setContactListener(new com.gmail.kogaplanetdev.kogaplanetlauncher.entities.CollisionHandler());
 	}
@@ -102,7 +99,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		entitiesBatch.begin();
 		
 		// Desenha a logo do KGP
-		mapDrawer.render();
+		mapDrawer.renderMap();
 		ui.update();
 		
 		entitiesBatch.end();
@@ -118,7 +115,6 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		entitiesBatch.dispose();
-		poly.dispose();
 		ui.dispose();
 	}
 }

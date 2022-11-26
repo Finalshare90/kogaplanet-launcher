@@ -80,10 +80,12 @@ public class Player{
 		// Atribui ao formato do corpo alguns dados para ser usado no Handler de colisão.
 		attributesFactory("isAlive",true);
 		attributesFactory("canBeKilled", true);
+		attributesFactory("test", "test");
 		setFixtureData();
 	 }
 	 
-	 private void attributesFactory(String attributeName, Boolean value){
+	 private void attributesFactory(String attributeName, Object value){
+		 // Put the attributes inside of a hashMap
 		 fixtureData.put(attributeName, value);
 	 }
 	 

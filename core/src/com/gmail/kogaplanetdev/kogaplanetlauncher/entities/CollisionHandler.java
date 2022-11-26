@@ -19,6 +19,7 @@ public class CollisionHandler implements ContactListener {
 		// Pequeno exemplo de como trabalhar com colisões pequenas tile-player		
 		fixtureDataA = (HashMap<String, Object>)arg0.getFixtureA().getUserData();
 		fixtureDataB = (HashMap<String, Object>)arg0.getFixtureB().getUserData();
+		System.out.println(fixtureDataA.get("test"));
 		try {
 			if((Boolean)fixtureDataA.get("canKill") && (Boolean)fixtureDataB.get("canBeKilled")){
 				fixtureDataB.replace("isAlive", false);
@@ -26,6 +27,7 @@ public class CollisionHandler implements ContactListener {
 		}catch(NullPointerException e){
 			if((Boolean)fixtureDataB.get("canKill") && (Boolean)fixtureDataA.get("canBeKilled")){
 				fixtureDataA.replace("isAlive", false);
+				
 		}
 	}
 		
