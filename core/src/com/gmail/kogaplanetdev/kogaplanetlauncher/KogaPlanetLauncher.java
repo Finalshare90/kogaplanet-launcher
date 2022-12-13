@@ -50,6 +50,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
    
 	@Override
 	public void create () {
+		
 		// Criação do mundo
 		WORLD = new World(new Vector2(0 , 0), true);	
 		

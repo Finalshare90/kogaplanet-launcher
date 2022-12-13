@@ -1,16 +1,15 @@
 package com.gmail.kogaplanetdev.kogaplanetlauncher.ui;
 
-import javax.print.DocFlavor.STRING;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Table.Debug;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.Player;
 
@@ -22,8 +21,11 @@ public class InterfaceMain{
 	private FreeTypeFontParameter parameter;
 	private BitmapFont font;
 	private Player player;
-	private Boolean isPressedF1, showHitBoxes;
+	private Boolean isPressedF1, showHitBoxes = false;
+	
 	Stage stage;
+	Table table;
+	
 	
 	public InterfaceMain(SpriteBatch batch, Player player) {	
 		
@@ -41,6 +43,9 @@ public class InterfaceMain{
 	    
 	    stage = new Stage(this.player.viewport, batch);
 	    Gdx.input.setInputProcessor(stage);
+	    table = new Table();
+	    table.setFillParent(true);
+	    stage.addActor(table);
 	}
 	
 	
@@ -65,20 +70,20 @@ public class InterfaceMain{
 	}
 	
 	public void update(Box2DDebugRenderer debugRenderer){
-				
+			// Mostrar Debug de hitboxes da box2d
+			isPressedF1 = Gdx.input.isKeyJustPressed(Keys.F1);
 		
-		// Mostrar Debug de hitboxes da box2d
-		isPressedF1 = Gdx.input.isKeyJustPressed(Keys.F1);
-		
-		//Apenas para debug.
-		if(showHitBoxes == true) {debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);}
-			if(isPressedF1) {
-				if(showHitBoxes == false) {
-					showHitBoxes = true;
-					}else {showHitBoxes = false;
-				}
+			//Apenas para debug.
+			if(showHitBoxes) {
+			 debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);
+			 table.debug(Debug.all);
 			}
-	}
+			
+			if(isPressedF1) {
+				showHitBoxes = !showHitBoxes;
+				table.debug(Debug.none); 	
+			}
+		}
 	
 	public void dispose(){
 		font.dispose();
