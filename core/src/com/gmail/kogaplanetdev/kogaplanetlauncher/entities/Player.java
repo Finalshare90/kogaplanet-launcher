@@ -80,7 +80,6 @@ public class Player{
 		// Atribui ao formato do corpo alguns dados para ser usado no Handler de colisão.
 		attributesFactory("isAlive",true);
 		attributesFactory("canBeKilled", true);
-		attributesFactory("test", "test");
 		setFixtureData();
 	 }
 	 

@@ -21,7 +21,7 @@ public class InterfaceMain{
 	private FreeTypeFontParameter parameter;
 	private BitmapFont font;
 	private Player player;
-	private Boolean isPressedF1, showHitBoxes = false;
+	private Boolean isPressedF1, showHitBoxes;
 	
 	Stage stage;
 	Table table;
@@ -50,9 +50,11 @@ public class InterfaceMain{
 	
 	
 	public void update() {
-		int fps = Gdx.graphics.getFramesPerSecond();
-		String fpsDisplay = "FPS: " + Integer.toString(fps);	
-		font.draw(batch,fpsDisplay, player.getX() + 560, player.getY() + 345);
+		
+		int getFps = Gdx.graphics.getFramesPerSecond();
+		String fpsToString = "FPS: " + Integer.toString(getFps);
+		
+		font.draw(batch,fpsToString, player.getX() + 560, player.getY() + 345);
 	}	
 	
 	public void createWidgetComponents() {
@@ -75,14 +77,15 @@ public class InterfaceMain{
 		
 			//Apenas para debug.
 			if(showHitBoxes) {
-			 debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);
-			 table.debug(Debug.all);
+				debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);
+			 	table.debug(Debug.all);
 			}
 			
 			if(isPressedF1) {
 				showHitBoxes = !showHitBoxes;
 				table.debug(Debug.none); 	
 			}
+			
 		}
 	
 	public void dispose(){

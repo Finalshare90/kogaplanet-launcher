@@ -6,20 +6,20 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 
 public class CollisionHandler implements ContactListener {
 
 	HashMap<String, Object> fixtureDataA;
 	HashMap<String, Object> fixtureDataB;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void beginContact(Contact arg0) {
 	
 		// Pequeno exemplo de como trabalhar com colisões pequenas tile-player		
 		fixtureDataA = (HashMap<String, Object>)arg0.getFixtureA().getUserData();
 		fixtureDataB = (HashMap<String, Object>)arg0.getFixtureB().getUserData();
-		System.out.println(fixtureDataA.get("test"));
+		
 		try {
 			if((Boolean)fixtureDataA.get("canKill") && (Boolean)fixtureDataB.get("canBeKilled")){
 				fixtureDataB.replace("isAlive", false);
