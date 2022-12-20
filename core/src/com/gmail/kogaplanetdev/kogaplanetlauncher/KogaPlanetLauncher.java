@@ -20,12 +20,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.Player;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.InterfaceMain;
+import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 	// entidades
-	Player p1;
+	public static Player PLAYER;
 	
 	// Mover para uma classe de entidade
 	Rectangle rectangle;
@@ -36,7 +36,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	TextureAtlas atlas;
 	SpriteBatch entitiesBatch;
     Sprite KogaSprite;
-	InterfaceMain ui;
+	PlayerGui gui;
 	MapDrawer mapDrawer;
 	
     // Physics go brrr haha
@@ -65,18 +65,17 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		
 	
 		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
-		p1 = new Player(entitiesBatch, atlas);
+		PLAYER = new Player(entitiesBatch, atlas);
 		String SpritesNames[] = {"Idle_Costas","Idle_Frente","Idle_Direita","Idle_Esquerda"};
-		p1.create(200, 200, SpritesNames[1]);
+		PLAYER.create(0, 0, SpritesNames[1]);
 		
 		// Boas práticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
-		p1.setAtlasSprites(count, SpritesNames[count]);
+		PLAYER.setAtlasSprites(count, SpritesNames[count]);
 		}
 		
 		// Classe de User interface:)
-		ui = new InterfaceMain(entitiesBatch, p1);
-		ui.createWidgetComponents();
+		gui = new PlayerGui(entitiesBatch, PLAYER);
 
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
@@ -93,29 +92,26 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 		WORLD.step(Gdx.graphics.getDeltaTime(), 8, 3);
 			
-		//Utilidades para debug ou simplesmente para testes
+		//Utilidades para debug
 		ScreenUtils.clear(Color.SLATE);
 		fpsLogger.log();
 		
-		entitiesBatch.begin();
+		//Renderiza cada tile do mapa
+		mapDrawer.renderMap(entitiesBatch);
 		
-		// Desenha a logo do KGP
-		mapDrawer.renderMap();
-		ui.update();
+		// O player começa a sua própria instancia de renderização.
+		PLAYER.update();
 		
-		entitiesBatch.end();
-		
-		//Após o fim do Batch acima, o player começa a sua própria instancia de renderização.
-		p1.update();
+		// update de UI
+		gui.update(entitiesBatch);
+		gui.update(debugRenderer);
 		
 		
-		// update de UI para debug, ele não precisa estar em um fluxo Batch.
-		ui.update(debugRenderer);
-		ui.stageUpdate();
+		
 	}
 	@Override
 	public void dispose () {
 		entitiesBatch.dispose();
-		ui.dispose();
+		gui.dispose();
 	}
 }

@@ -33,6 +33,8 @@ public class Player{
 	private Vector2 position;
 	public Viewport viewport;
 	
+	public Vector2 originPosition = new Vector2();
+	
 	// Esses atributos só vão ser usados no CollsionHandler.
 	HashMap<String, Object> fixtureData = new HashMap<>();
 	
@@ -63,8 +65,9 @@ public class Player{
 	 */ 
 	 public void create(int x, int y, String defaultSprite){
 		
-		this.position.y = y;
-		this.position.x = x;
+		originPosition.set(x, y);
+		position.set(originPosition);
+		
 		
 		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
 		sprite = atlas.createSprite(defaultSprite);
@@ -129,7 +132,9 @@ public class Player{
 		Batch.setProjectionMatrix(cam.combined);
 		cam.position.x = position.x;
 		cam.position.y = position.y;
-		
+		viewport.setScreenY((int)cam.position.y);
+		viewport.setScreenX((int)cam.position.x);
+
 		cam.update();
 	 	viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	 	
@@ -184,9 +189,13 @@ public class Player{
 	 	Batch.end();
 	
 	}
+	public void isAlive(Boolean isAlive){
+		fixtureData.replace("isAlive", isAlive);
+	}
+	
 	private void isAlive(){
 		if(!(Boolean)fixtureData.get("isAlive")) {
-			body.setTransform(0, 0, 0);
+			body.setTransform(originPosition.x, originPosition.y, 0);
 			fixtureData.replace("isAlive", true);
 		}
 	}

@@ -2,6 +2,9 @@ package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import finalshare.tileReader.essentials.Reader;
@@ -14,8 +17,21 @@ public class MapDrawer {
 	String textures;
 	Texture blank = new Texture("misc/blank.png");
 	
+	
+	public static String mapName = JOptionPane.showInputDialog("please, enter the name of the desired map");
+	
+	/*
+	 Se o sistema de tile começar a quebrar, comentar código acima e o a baixo e substituir por esse
+	 VVVV
+	 public String dir = System.getProperty("user.home") + File.separator + "Documents" +
+	 File.separator + "KogaPlanetLauncher"+ File.separator + "games";
+	 */
+	
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
-	File.separator + "KogaPlanetLauncher"+ File.separator + "games";
+	File.separator + "KogaPlanetLauncher"+ File.separator + "games" + File.separator + mapName;
+	
+	
+	
 	Reader reader;
 	
 	public MapDrawer(SpriteBatch batch){
@@ -119,10 +135,12 @@ public class MapDrawer {
 		}
 	}
 	
-	public void renderMap(){
+	public void renderMap(SpriteBatch batch){
+		batch.begin();
 		for(int count = 0; count < tiles.size(); count++){
 			batch.draw(tiles.get(count).texture, tiles.get(count).x, tiles.get(count).y);
 		}
+		batch.end();
 	}
 }
 	
