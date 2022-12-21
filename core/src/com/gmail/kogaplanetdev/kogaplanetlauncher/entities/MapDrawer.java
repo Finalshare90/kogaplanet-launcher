@@ -3,6 +3,7 @@ package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +19,6 @@ public class MapDrawer {
 	Texture blank = new Texture("misc/blank.png");
 	
 	
-	public static String mapName = JOptionPane.showInputDialog("please, enter the name of the desired map");
 	
 	/*
 	 Se o sistema de tile começar a quebrar, comentar código acima e o a baixo e substituir por esse
@@ -26,6 +26,19 @@ public class MapDrawer {
 	 public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	 File.separator + "KogaPlanetLauncher"+ File.separator + "games";
 	 */
+	
+	// Temporário? vai saber, você sabe? eu não sei, pq eu saberia?
+	static private String mapDialog() {
+		JOptionPane setMapPane = new JOptionPane();
+		JDialog dialog = setMapPane.createDialog("Insert the name of your map");
+		dialog.setAlwaysOnTop(true);
+		setMapPane.setName("Insert your map");
+		setMapPane.setToolTipText("Insert your map name");
+		mapName = setMapPane.showInputDialog(dialog, "please, enter the name of the desired map");
+		return mapName;
+	}
+	public static String mapName = mapDialog();
+	
 	
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	File.separator + "KogaPlanetLauncher"+ File.separator + "games" + File.separator + mapName;
@@ -41,7 +54,7 @@ public class MapDrawer {
 	
 	
 	private void verifyDirectory() {
-	System.out.println(dir);
+		
 		File file = new File(dir);
 		if(file.exists()) {
 		System.out.println("default directory has already been created, proceeding...");
