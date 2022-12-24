@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,14 +21,15 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
 public class MenuGui {
 	
 	Skin menuSkin;
-	Table menuGroup;
-	private Boolean isClicked = true;
+	Table menuGroup,fpsTable;
+	private Boolean isClicked = true, isFpsActive = false;
 	Button resetButton, leaveButton;
+	CheckBox fpsCheckBox;
 	Label currentMap, menuLabel;
 	BitmapFont font;
-
 	
-	public MenuGui(Skin menuSkin, Stage stage){
+	
+	public MenuGui(Skin menuSkin, Stage stage, Table fpsTable){
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/PrStart.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -35,6 +37,8 @@ public class MenuGui {
 		font = generator.generateFont(parameter);
 		
 		this.menuSkin = menuSkin;
+		this.fpsTable = fpsTable;
+		
 		menuSkin.add("font", font);
 		createMenu();
 		stage.addActor(menuGroup);
@@ -90,7 +94,6 @@ public class MenuGui {
 		.padTop(-300)
 		.padLeft(-800)
 		.top();
-		
 	}
 	
 	private Button createButton(Skin uiSkin, String up, String down){
@@ -110,7 +113,13 @@ public class MenuGui {
 	public void isClicked(){
 		menuGroup.setVisible(isClicked);
 		isClicked = !isClicked;
-	}	
+	}
+	
+	public boolean isFpsActive(Table table) {
+		table.setVisible(isFpsActive);
+		isFpsActive = !isFpsActive;
+		return isFpsActive;
+	}
 
 	public Actor getGroup(){
 		return menuGroup;
