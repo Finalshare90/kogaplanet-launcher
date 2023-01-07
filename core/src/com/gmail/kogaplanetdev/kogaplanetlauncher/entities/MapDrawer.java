@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+
 import finalshare.tileReader.essentials.Reader;
 
 public class MapDrawer {
@@ -17,7 +19,7 @@ public class MapDrawer {
 	ArrayList<Tile> tiles = new ArrayList<Tile>();	
 	String textures;
 	Texture blank = new Texture("misc/blank.png");
-	
+	Vector2 originPosition = new Vector2();
 	
 	
 	/*
@@ -35,6 +37,7 @@ public class MapDrawer {
 		setMapPane.setName("Insert your map");
 		setMapPane.setToolTipText("Insert your map name");
 		mapName = setMapPane.showInputDialog(dialog, "please, enter the name of the desired map");
+		dialog.dispose();
 		return mapName;
 	}
 	public static String mapName = mapDialog();
@@ -77,9 +80,13 @@ public class MapDrawer {
 		// Cria a instância do leitor e lê as texturas e os "bits" de cada tile no 3ml.
 		this.reader = new Reader(dir + File.separator + "currentMap");
 		
+		
 		try {
 			reader.scan();	
 		} catch (Exception e) {e.printStackTrace();}
+		
+		originPosition.x = reader.getOriginPosition()[0];
+		originPosition.y = reader.getOriginPosition()[1];
 		
 		// Gera o path de cada textura
 		texturesFactory();
@@ -155,6 +162,11 @@ public class MapDrawer {
 		}
 		batch.end();
 	}
+	
+	public Vector2 getOriginPosition() {
+		return originPosition;
+	}
+	
 }
 	
 
