@@ -33,7 +33,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 	// Assets
 	Texture logoKGP;
-	TextureAtlas atlas;
+	TextureAtlas idleJames, walkingJames;
 	SpriteBatch entitiesBatch;
     Sprite KogaSprite;
 	PlayerGui gui;
@@ -59,15 +59,20 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		
 		// Gráficos
 		entitiesBatch = new SpriteBatch();
-		atlas = new TextureAtlas("sprites/james/james_IDLE.atlas");	
+		idleJames = new TextureAtlas("sprites/james/james_IDLE.atlas");	
+		walkingJames = new TextureAtlas("sprites/james/james_walking.atlas");
+		
 		logoKGP = new Texture("logos/256x_kgp.png");
 		KogaSprite = new Sprite(logoKGP);
 		
+		// Sistema de tiles
+		mapDrawer = new MapDrawer(entitiesBatch);
+		mapDrawer.loadMap();
 	
 		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
-		PLAYER = new Player(entitiesBatch, atlas);
+		PLAYER = new Player(entitiesBatch, idleJames, walkingJames);
 		String SpritesNames[] = {"Idle_Costas","Idle_Frente","Idle_Direita","Idle_Esquerda"};
-		PLAYER.create(0, 0, SpritesNames[1]);
+		PLAYER.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		
 		// Boas práticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
@@ -80,9 +85,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
 
-		// Sistema de tiles
-		mapDrawer = new MapDrawer(entitiesBatch);
-		mapDrawer.loadMap();
+		
 		
 		WORLD.setContactListener(new com.gmail.kogaplanetdev.kogaplanetlauncher.entities.CollisionHandler());
 	}

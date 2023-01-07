@@ -1,0 +1,132 @@
+
+james_walking.png
+size: 256, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+left/0
+  rotate: false
+  xy: 86, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+left/4
+  rotate: false
+  xy: 86, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+left/2
+  rotate: false
+  xy: 20, 2
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+left/3
+  rotate: false
+  xy: 46, 2
+  size: 9, 20
+  orig: 9, 20
+  offset: 0, 0
+  index: -1
+left/1
+  rotate: false
+  xy: 46, 2
+  size: 9, 20
+  orig: 9, 20
+  offset: 0, 0
+  index: -1
+left/5
+  rotate: false
+  xy: 95, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+left/7
+  rotate: false
+  xy: 95, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+left/6
+  rotate: false
+  xy: 131, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+left/8
+  rotate: false
+  xy: 77, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/1
+  rotate: false
+  xy: 57, 2
+  size: 9, 20
+  orig: 9, 20
+  offset: 0, 0
+  index: -1
+right/2
+  rotate: false
+  xy: 2, 2
+  size: 16, 20
+  orig: 16, 20
+  offset: 0, 0
+  index: -1
+right/3
+  rotate: false
+  xy: 33, 2
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+right/4
+  rotate: false
+  xy: 104, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/0
+  rotate: false
+  xy: 104, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/5
+  rotate: false
+  xy: 68, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/7
+  rotate: false
+  xy: 68, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/6
+  rotate: false
+  xy: 113, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1
+right/8
+  rotate: false
+  xy: 122, 2
+  size: 7, 20
+  orig: 7, 20
+  offset: 0, 0
+  index: -1

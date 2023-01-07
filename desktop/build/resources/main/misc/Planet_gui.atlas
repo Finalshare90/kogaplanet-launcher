@@ -1,0 +1,125 @@
+
+Planet_gui.png
+size: 8192, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Buttons/button_down
+  rotate: false
+  xy: 5692, 57
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/button_up
+  rotate: false
+  xy: 6468, 1009
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/check_off
+  rotate: false
+  xy: 5516, 1009
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/check_on
+  rotate: false
+  xy: 4100, 1009
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/close
+  rotate: false
+  xy: 2876, 1081
+  size: 880, 878
+  orig: 880, 878
+  offset: 0, 0
+  index: -1
+Buttons/leave
+  rotate: false
+  xy: 4100, 794
+  size: 1080, 213
+  orig: 1080, 213
+  offset: 0, 0
+  index: -1
+Buttons/leave_selected
+  rotate: false
+  xy: 2446, 2
+  size: 1080, 213
+  orig: 1080, 213
+  offset: 0, 0
+  index: -1
+Buttons/menu
+  rotate: false
+  xy: 6644, 57
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/playerlist_provavelmente_disponivel_com_a_atualizacao_do_multiplayer
+  rotate: false
+  xy: 1924, 1009
+  size: 950, 950
+  orig: 950, 950
+  offset: 0, 0
+  index: -1
+Buttons/reset
+  rotate: false
+  xy: 3528, 2
+  size: 1080, 213
+  orig: 1080, 213
+  offset: 0, 0
+  index: -1
+Buttons/reset_selected
+  rotate: false
+  xy: 4610, 2
+  size: 1080, 213
+  orig: 1080, 213
+  offset: 0, 0
+  index: -1
+HP/empty
+  rotate: false
+  xy: 2, 90
+  size: 2442, 125
+  orig: 2442, 125
+  offset: 0, 0
+  index: -1
+HP/full
+  rotate: false
+  xy: 3072, 217
+  size: 2442, 125
+  orig: 2442, 125
+  offset: 0, 0
+  index: -1
+Loading/load_empty
+  rotate: false
+  xy: 2, 496
+  size: 4096, 150
+  orig: 4096, 150
+  offset: 0, 0
+  index: -1
+Loading/load_full
+  rotate: false
+  xy: 2, 344
+  size: 4096, 150
+  orig: 4096, 150
+  offset: 0, 0
+  index: -1
+Windows/menu
+  rotate: false
+  xy: 2, 648
+  size: 1920, 1311
+  orig: 1920, 1311
+  offset: 0, 0
+  index: -1
+Windows/top_bar
+  rotate: false
+  xy: 2, 217
+  size: 3068, 125
+  orig: 3068, 125
+  offset: 0, 0
+  index: -1

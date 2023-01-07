@@ -1,7 +1,6 @@
 package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,12 +11,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
 import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -26,19 +24,19 @@ public class Player{
 	//SpriteBatch, armazene uma instancia aqui para poder desenhar o player
 	private SpriteBatch Batch; 
 	private String AtlasSprites[] = new String[4]; //outra gambiarra, ele vai armazenar os nomes de cada sprite do spritesheet
-	private TextureAtlas atlas;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 
+	private TextureAtlas idleJames;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 
 	private Sprite sprite;
+	private TextureAtlas walkingJamesAtlas;
+	Animation<Sprite> walkingJames;
+	
 	private OrthographicCamera cam;
-	private Rectangle rectangle;
-	private Vector2 position;
 	public Viewport viewport;
 	
+	private Vector2 position;
 	public Vector2 originPosition = new Vector2();
 	
 	// Esses atributos só vão ser usados no CollsionHandler.
-	HashMap<String, Object> fixtureData = new HashMap<>();
-	
-	
+	HashMap<String, Object> fixtureData = new HashMap<>();	
 	
 	//física
 	 Body body;
@@ -52,29 +50,30 @@ public class Player{
 	public boolean isPressedW, isPressedS, isPressedA, isPressedD;
 
 	
-	 public Player(SpriteBatch Batch, TextureAtlas atlas) {
-		 
+	 public Player(SpriteBatch Batch, TextureAtlas idleJames, TextureAtlas walkingJames){
+		
 		this.Batch = Batch;
-		this.atlas = atlas;
+		this.idleJames = idleJames;
+		this.walkingJamesAtlas = walkingJames;
+		
 		position = new Vector2();
+		
 	 }
 	
 	 /*
 	  Use o método create para já setar as configurações de um player,
 	  ou corra o risco de receber um glorioso nullPointerException.
 	 */ 
-	 public void create(int x, int y, String defaultSprite){
+	 public void create(Vector2 originPosition, String defaultSprite){
 		
-		originPosition.set(x, y);
-		position.set(originPosition);
-		
+		this.originPosition.set(originPosition);
+		position.set(this.originPosition);
 		
 		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
-		sprite = atlas.createSprite(defaultSprite);
+		sprite = idleJames.createSprite(defaultSprite);
 		cam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		
 		//cria um retangulo que vai servir como "detector de colisão"
-		rectangle = new Rectangle(position.x, position.y, sprite.getWidth() + 15, sprite.getHeight() + 25);
 		viewport = new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
 		
 		// Cria o corpo e seu formato
@@ -98,13 +97,13 @@ public class Player{
 	 
 	 private void createBody() {
 		
-		// Cria um corpo com aas especificações necessarias.
+		// Cria um corpo com as especificações necessarias.
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(getRectangle().x,getRectangle().y);
+		bodyDef.position.set(position);
 		body = KogaPlanetLauncher.WORLD.createBody(bodyDef);
 		poly = new PolygonShape();
-		poly.setAsBox(getRectangle().width/2,getRectangle().height/2);
+		poly.setAsBox(sprite.getWidth(),sprite.getHeight());
 		
 		// Cria acessorios ao corpo, como o formato que ele tem.
 		fixtureDef = new FixtureDef();
@@ -116,16 +115,22 @@ public class Player{
 		
 	}
 	 
+	 float stateTime = 0;
+	 
 	 /*
 	  Método verboso que vai deixar o Render mais "clean".
 	  Ah, ele também é o que escuta as teclas do jogador, e faz toda a parte da
 	  interação jogo-úsuario
 	 */
+	 
 	public void update(){		
 		/*
 		 sempre que for editar uma tecla, ou desenhar algo novo em player, coloque
 		 dentro do fluxo "Batch".
-		*/	
+		*/
+ 		stateTime += Gdx.graphics.getDeltaTime();
+
+		
 		Batch.begin();
 		
 		//update da camera
@@ -138,7 +143,7 @@ public class Player{
 		cam.update();
 	 	viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	 	
-		//teclas para a movimentação.
+	 	 //teclas para a movimentação.
 		 isPressedW = Gdx.input.isKeyPressed(Keys.W);
 		 isPressedS = Gdx.input.isKeyPressed(Keys.S);
 		 isPressedD = Gdx.input.isKeyPressed(Keys.D); 
@@ -149,7 +154,6 @@ public class Player{
 		 // Tira a velocidade residual quando nenhuma tecla é pressionada
 		 body.setLinearVelocity(0, 0);
 		 
-		
 		 
 		 // Da update na posição do sprite na tela.
 		 position = body.getPosition();	
@@ -160,25 +164,29 @@ public class Player{
 			body.setLinearVelocity(body.getLinearVelocity().x, 100);
 			 
 			//define o sprite atual com base no input
-			sprite = atlas.createSprite(AtlasSprites[0]);
+			sprite = idleJames.createSprite(AtlasSprites[0]);
+			
 		 	}
 	 
 	 	 if (isPressedS) {	 		 
 	 		body.setLinearVelocity(body.getLinearVelocity().x, -100);
 	 		
-	 		sprite = atlas.createSprite(AtlasSprites[1]);
+	 		sprite = idleJames.createSprite(AtlasSprites[1]);
 		 }
 	 
 	 	 if (isPressedD) {
 		 	body.setLinearVelocity(100, body.getLinearVelocity().y);
 	 	
-	 		sprite = atlas.createSprite(AtlasSprites[2]);	
+		 	walkingJames = createAnimation("right", 8, walkingJamesAtlas);	
+		 	sprite = walkingJames.getKeyFrame(stateTime, isPressedD);
 	 	 }
 	 	 
 	 	 if (isPressedA) {
 	 		body.setLinearVelocity(-100, body.getLinearVelocity().y);
 	 		
-	 		sprite = atlas.createSprite(AtlasSprites[3]);
+	 		walkingJames = createAnimation("left", 8, walkingJamesAtlas);
+	 		sprite = walkingJames.getKeyFrame(stateTime, isPressedA);
+	 		
 		 }
 	 	 
 	 	 /* 
@@ -201,18 +209,38 @@ public class Player{
 	}
 	
 
+	// Parece funcionar, então não vale a pena criar algo descente para isso:^)
+	
+	
+	/*
+	Prefix é simplesmente em que pasta, ou em que pacote os frames dessa animação estão
+	localizados dentro de um SpriteAtlas.
+	Por exemplo: left/1 = [prefixo]/[frames] (o atributo frames é a quantia total de frames existentes.)
+	*/ 
+	private Animation<Sprite> createAnimation(String prefix, float frames, TextureAtlas spriteSheet){
+		
+		String framesIndex[] = new String[(int)frames];
+		Sprite animationFrames[] = new Sprite[(int)frames];
+		
+		for(int currentFrame = 0; currentFrame < frames; currentFrame++) {
+			framesIndex[currentFrame] = prefix + "/" + currentFrame;
+			animationFrames[currentFrame] = spriteSheet.createSprite(framesIndex[currentFrame]);
+		}		
+		
+		return new Animation<Sprite>(1/frames, animationFrames);
+	}
+	
 	/*
 	 Esse merece um comentario engraçaralho só para ele:
 	 Gambiarra a moda Final de qualidade, tu basicamente coloca um número de onde que o atlasSprites
 	 vai armazenar o nome do Sprite a ser usado nos listerners, e mudar os sprites de acordo.
 	 */
-	
 	public void setAtlasSprites(int SpritePos, String SpriteName) {
 		AtlasSprites[SpritePos] = SpriteName;
 	}
 	
 		public void setAtlas(TextureAtlas atlas) {
-		this.atlas = atlas;
+		this.idleJames = atlas;
 	}
 	
 	public float getY() {
@@ -232,8 +260,5 @@ public class Player{
 	}
 	public OrthographicCamera getCam() {
 		return cam;
-	}
-	public Rectangle getRectangle() {
-		return rectangle;
 	}
 }
