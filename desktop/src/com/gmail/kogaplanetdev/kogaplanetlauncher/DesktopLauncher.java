@@ -7,23 +7,25 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		
-		//objeto da janela, NÃO TOCAR
+		//objeto da janela, Nï¿½O TOCAR
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();	
 		
 		//Outros objetos...
 		LLTJokes jokes = new LLTJokes();
 		
 		
-		//config de gráficos e perfomance
+		//config de grï¿½ficos e perfomance
 		config.setForegroundFPS(60);
 		config.setDecorated(true);
+		config.setResizable(true);
+		
 		
 		//config relacionadas ao programa em si
 		config.setMaximized(true);
 		config.setWindowIcon("logos/256x_kgp.png");
-		config.setTitle("KogaPlanet Launcher 2.1.6 pre-alpha(Build BRA shortHair) " + jokes.chooseAjoke());	
+		config.setTitle("KogaPlanet Launcher 2.2.3 pre-alpha(Build BRA shortHair) " + jokes.chooseAjoke());	
 		
-		//inicia uma nova instancia do programa, NÃO TOCAR
+		//inicia uma nova instancia do programa, Nï¿½O TOCAR
 		new Lwjgl3Application(new KogaPlanetLauncher(), config);
 	}
 }

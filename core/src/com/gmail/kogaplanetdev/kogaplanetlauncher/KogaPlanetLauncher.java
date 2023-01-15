@@ -51,15 +51,15 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	@Override
 	public void create () {
 		
-		// Criação do mundo
+		// Criaï¿½ï¿½o do mundo
 		WORLD = new World(new Vector2(0 , 0), true);	
 		
-		// Só para usar como efeito de comparação, inutil, mas legal deixar
+		// Sï¿½ para usar como efeito de comparaï¿½ï¿½o, inutil, mas legal deixar
 		fpsLogger = new FPSLogger();
 		
-		// Gráficos
+		// Grï¿½ficos
 		entitiesBatch = new SpriteBatch();
-		idleJames = new TextureAtlas("sprites/james/james_IDLE.atlas");	
+		idleJames = new TextureAtlas("sprites/james/james_idle.atlas");	
 		walkingJames = new TextureAtlas("sprites/james/james_walking.atlas");
 		
 		logoKGP = new Texture("logos/256x_kgp.png");
@@ -71,10 +71,10 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
 		PLAYER = new Player(entitiesBatch, idleJames, walkingJames);
-		String SpritesNames[] = {"Idle_Costas","Idle_Frente","Idle_Direita","Idle_Esquerda"};
+		String SpritesNames[] = {"Idle_back","Idle_front","Idle_right","Idle_left"};
 		PLAYER.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		
-		// Boas práticas em locais errados.java 
+		// Boas prï¿½ticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
 		PLAYER.setAtlasSprites(count, SpritesNames[count]);
 		}
@@ -102,7 +102,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		//Renderiza cada tile do mapa
 		mapDrawer.renderMap(entitiesBatch);
 		
-		// O player começa a sua própria instancia de renderização.
+		// O player comeï¿½a a sua prï¿½pria instancia de renderizaï¿½ï¿½o.
 		PLAYER.update();
 		
 		// update de UI
