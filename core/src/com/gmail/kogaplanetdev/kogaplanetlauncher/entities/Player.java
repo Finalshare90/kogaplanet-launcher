@@ -25,9 +25,10 @@ public class Player{
 	private SpriteBatch Batch; 
 	private String AtlasSprites[] = new String[4]; //outra gambiarra, ele vai armazenar os nomes de cada sprite do spritesheet
 	private TextureAtlas idleJames;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 
-	private Sprite sprite;
+	private Sprite currentSprite;
 	private TextureAtlas walkingJamesAtlas;
 	Animation<Sprite> walkingJames;
+	private HashMap<String, Sprite> idleSprites = new HashMap<>();
 	
 	private OrthographicCamera cam;
 	public Viewport viewport;
@@ -35,10 +36,10 @@ public class Player{
 	private Vector2 position;
 	public Vector2 originPosition = new Vector2();
 	
-	// Esses atributos só vão ser usados no CollsionHandler.
+	// Esses atributos sï¿½ vï¿½o ser usados no CollsionHandler.
 	HashMap<String, Object> fixtureData = new HashMap<>();	
 	
-	//física
+	//fï¿½sica
 	 Body body;
 	 BodyDef bodyDef;
 	 Fixture fixture;
@@ -46,7 +47,7 @@ public class Player{
 	 FixtureDef fixtureDef;
 	
 	
-	//gambiarra pura, não toque, só saiba que é os listerners de teclas 
+	//gambiarra pura, nï¿½o toque, sï¿½ saiba que ï¿½ os listerners de teclas 
 	public boolean isPressedW, isPressedS, isPressedA, isPressedD;
 
 	
@@ -61,7 +62,7 @@ public class Player{
 	 }
 	
 	 /*
-	  Use o método create para já setar as configurações de um player,
+	  Use o mï¿½todo create para jï¿½ setar as configuraï¿½ï¿½es de um player,
 	  ou corra o risco de receber um glorioso nullPointerException.
 	 */ 
 	 public void create(Vector2 originPosition, String defaultSprite){
@@ -69,20 +70,27 @@ public class Player{
 		this.originPosition.set(originPosition);
 		position.set(this.originPosition);
 		
-		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
-		sprite = idleJames.createSprite(defaultSprite);
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		// Idle Sprites
+		idleSprites.put("a", idleJames.createSprite("Idle_left"));
+		idleSprites.put("w", idleJames.createSprite("Idle_back"));
+		idleSprites.put("s", idleJames.createSprite("Idle_front"));
+		idleSprites.put("d", idleJames.createSprite("Idle_right"));
 		
-		//cria um retangulo que vai servir como "detector de colisão"
+		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
+		currentSprite = idleJames.createSprite(defaultSprite);
+		cam = new OrthographicCamera(1366,706);
+		//cria um retangulo que vai servir como "detector de colisï¿½o"
 		viewport = new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
 		
 		// Cria o corpo e seu formato
 		createBody();
 		
-		// Atribui ao formato do corpo alguns dados para ser usado no Handler de colisão.
+		// Atribui ao formato do corpo alguns dados para ser usado no Handler de colisï¿½o.
 		attributesFactory("isAlive",true);
 		attributesFactory("canBeKilled", true);
 		setFixtureData();
+		
+		
 	 }
 	 
 	 private void attributesFactory(String attributeName, Object value){
@@ -91,26 +99,26 @@ public class Player{
 	 }
 	 
 	 private void setFixtureData(){
-		// Define os dados de úsuario dessa fixture, só pode 1, por isso fiz um hashmap.
+		// Define os dados de ï¿½suario dessa fixture, sï¿½ pode 1, por isso fiz um hashmap.
 		fixture.setUserData(fixtureData);
 	}
 	 
 	 private void createBody() {
 		
-		// Cria um corpo com as especificações necessarias.
+		// Cria um corpo com as especificaï¿½ï¿½es necessarias.
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
 		body = KogaPlanetLauncher.WORLD.createBody(bodyDef);
 		poly = new PolygonShape();
-		poly.setAsBox(sprite.getWidth(),sprite.getHeight());
+		poly.setAsBox(idleSprites.get("w").getWidth(),idleSprites.get("w").getHeight());
 		
 		// Cria acessorios ao corpo, como o formato que ele tem.
 		fixtureDef = new FixtureDef();
 		fixtureDef.shape = poly;
 		fixture = body.createFixture(fixtureDef);
 		
-		// Impede a rotação dele.
+		// Impede a rotaï¿½ï¿½o dele.
 		body.setFixedRotation(true);
 		
 	}
@@ -118,11 +126,11 @@ public class Player{
 	 float stateTime = 0;
 	 
 	 /*
-	  Método verboso que vai deixar o Render mais "clean".
-	  Ah, ele também é o que escuta as teclas do jogador, e faz toda a parte da
-	  interação jogo-úsuario
+	  Mï¿½todo verboso que vai deixar o Render mais "clean".
+	  Ah, ele tambï¿½m ï¿½ o que escuta as teclas do jogador, e faz toda a parte da
+	  interaï¿½ï¿½o jogo-ï¿½suario
 	 */
-	 
+	String lastInput = "s";
 	public void update(){		
 		/*
 		 sempre que for editar uma tecla, ou desenhar algo novo em player, coloque
@@ -143,7 +151,7 @@ public class Player{
 		cam.update();
 	 	viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	 	
-	 	 //teclas para a movimentação.
+	 	 //teclas para a movimentaï¿½ï¿½o.
 		 isPressedW = Gdx.input.isKeyPressed(Keys.W);
 		 isPressedS = Gdx.input.isKeyPressed(Keys.S);
 		 isPressedD = Gdx.input.isKeyPressed(Keys.D); 
@@ -151,49 +159,59 @@ public class Player{
 		 
 		 isAlive();
 		 
-		 // Tira a velocidade residual quando nenhuma tecla é pressionada
+		 // Tira a velocidade residual quando nenhuma tecla ï¿½ pressionada
 		 body.setLinearVelocity(0, 0);
 		 
 		 
-		 // Da update na posição do sprite na tela.
+		 // Da update na posiï¿½ï¿½o do sprite na tela.
 		 position = body.getPosition();	
 		 
-		 //verificações de teclas, por enquanto esse sistema vai ficar assim, pretendo melhora-lo no futuro.
+		  if(!isPressedA && !isPressedD && !isPressedS && !isPressedW){
+	 		currentSprite = checkIdleSprite(lastInput, idleSprites);
+	 	 }
+		  
+		 //verificaï¿½ï¿½es de teclas, por enquanto esse sistema vai ficar assim, pretendo melhora-lo no futuro.
 		 if(isPressedW){
-			// move o BODY do player, mas não move necessariamente o Sprite, a posição dele é diretamente vinculada com a do body
+			// move o BODY do player, mas nï¿½o move necessariamente o Sprite, a posiï¿½ï¿½o dele ï¿½ diretamente vinculada com a do body
 			body.setLinearVelocity(body.getLinearVelocity().x, 100);
-			 
+			lastInput = "w";
 			//define o sprite atual com base no input
-			sprite = idleJames.createSprite(AtlasSprites[0]);
+			currentSprite = idleJames.createSprite(AtlasSprites[0]);
 			
 		 	}
 	 
-	 	 if (isPressedS) {	 		 
+	 	 if (isPressedS) {	 
 	 		body.setLinearVelocity(body.getLinearVelocity().x, -100);
-	 		
-	 		sprite = idleJames.createSprite(AtlasSprites[1]);
+	 		lastInput = "s";
+	 		walkingJames = createAnimation("down", 8, walkingJamesAtlas);	
+		 	currentSprite = walkingJames.getKeyFrame(stateTime, isPressedS);
+		 	
 		 }
 	 
 	 	 if (isPressedD) {
+	 		 
 		 	body.setLinearVelocity(100, body.getLinearVelocity().y);
-	 	
+		 	lastInput = "d";
 		 	walkingJames = createAnimation("right", 8, walkingJamesAtlas);	
-		 	sprite = walkingJames.getKeyFrame(stateTime, isPressedD);
+		 	currentSprite = walkingJames.getKeyFrame(stateTime, isPressedD);
 	 	 }
 	 	 
 	 	 if (isPressedA) {
 	 		body.setLinearVelocity(-100, body.getLinearVelocity().y);
-	 		
+	 		lastInput = "a";
 	 		walkingJames = createAnimation("left", 8, walkingJamesAtlas);
-	 		sprite = walkingJames.getKeyFrame(stateTime, isPressedA);
+	 		currentSprite = walkingJames.getKeyFrame(stateTime, isPressedA);
 	 		
 		 }
 	 	 
+	 	 
+	 	
+	 	 
 	 	 /* 
-	 	    Desenha o sprite atual que foi passado na verificação,
-	 	  	ou o sprite default do método Create()
+	 	    Desenha o sprite atual que foi passado na verificaï¿½ï¿½o,
+	 	  	ou o sprite default do mï¿½todo Create()
 	 	  */
-	 	 Batch.draw(sprite, body.getPosition().x-10, body.getPosition().y-24,21,50);	
+	 	 Batch.draw(currentSprite, body.getPosition().x-12, body.getPosition().y-24,25,50);	
 	 	Batch.end();
 	
 	}
@@ -208,14 +226,13 @@ public class Player{
 		}
 	}
 	
-
-	// Parece funcionar, então não vale a pena criar algo descente para isso:^)
 	
 	
+	// Parece funcionar, entï¿½o nï¿½o vale a pena criar algo descente para isso:^)
 	/*
-	Prefix é simplesmente em que pasta, ou em que pacote os frames dessa animação estão
+	Prefix ï¿½ simplesmente em que pasta, ou em que pacote os frames dessa animaï¿½ï¿½o estï¿½o
 	localizados dentro de um SpriteAtlas.
-	Por exemplo: left/1 = [prefixo]/[frames] (o atributo frames é a quantia total de frames existentes.)
+	Por exemplo: left/1 = [prefixo]/[frames] (o atributo frames ï¿½ a quantia total de frames existentes.)
 	*/ 
 	private Animation<Sprite> createAnimation(String prefix, float frames, TextureAtlas spriteSheet){
 		
@@ -227,12 +244,16 @@ public class Player{
 			animationFrames[currentFrame] = spriteSheet.createSprite(framesIndex[currentFrame]);
 		}		
 		
-		return new Animation<Sprite>(1/frames, animationFrames);
+		return new Animation<Sprite>(1/frames,animationFrames);
+	}
+	
+	private Sprite checkIdleSprite(String input, HashMap<String, Sprite> idleSprites) {
+		return idleSprites.get(input);
 	}
 	
 	/*
-	 Esse merece um comentario engraçaralho só para ele:
-	 Gambiarra a moda Final de qualidade, tu basicamente coloca um número de onde que o atlasSprites
+	 Esse merece um comentario engraï¿½aralho sï¿½ para ele:
+	 Gambiarra a moda Final de qualidade, tu basicamente coloca um nï¿½mero de onde que o atlasSprites
 	 vai armazenar o nome do Sprite a ser usado nos listerners, e mudar os sprites de acordo.
 	 */
 	public void setAtlasSprites(int SpritePos, String SpriteName) {
@@ -256,7 +277,7 @@ public class Player{
 		body.getPosition().y = y;
 	}
 	public Sprite getSprite() {
-		return sprite;
+		return currentSprite;
 	}
 	public OrthographicCamera getCam() {
 		return cam;

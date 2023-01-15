@@ -52,7 +52,7 @@ public class PlayerGui{
 		// Parte do sistema de hitbox, debug apenas
 		showHitBoxes = false;
 		
-		// Gera a fonte PrStart, não é essencial, mas vale a pena usar =)
+		// Gera a fonte PrStart, nï¿½o ï¿½ essencial, mas vale a pena usar =)
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/PrStart.ttf"));
 		parameter = new FreeTypeFontParameter();
 		parameter.size = 12;
@@ -96,7 +96,7 @@ public class PlayerGui{
 	   
 	    
 	    barContainer = new Container<Actor>();
-	    barContainer.setSize(Gdx.graphics.getWidth(), 80);
+	    barContainer.setSize(1366, 80);
 	    barContainer.background(uiSkin.newDrawable("Windows/top_bar"));
 	    
 	    stage.addActor(barContainer);
