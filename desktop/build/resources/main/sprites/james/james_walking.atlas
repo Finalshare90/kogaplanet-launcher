@@ -1,132 +1,195 @@
 
 james_walking.png
-size: 256, 32
+size: 121, 70
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-left/0
+down/0
   rotate: false
-  xy: 86, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 2, 4
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
-left/4
+down/1
   rotate: false
-  xy: 86, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 15, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/2
+  rotate: false
+  xy: 28, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/3
+  rotate: false
+  xy: 41, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/4
+  rotate: false
+  xy: 54, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/5
+  rotate: false
+  xy: 67, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/6
+  rotate: false
+  xy: 80, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/7
+  rotate: false
+  xy: 93, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+down/8
+  rotate: false
+  xy: 106, 4
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+left/0
+  rotate: false
+  xy: 2, 26
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+left/1
+  rotate: false
+  xy: 15, 26
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 left/2
   rotate: false
-  xy: 20, 2
+  xy: 28, 26
   size: 11, 20
   orig: 11, 20
   offset: 0, 0
   index: -1
 left/3
   rotate: false
-  xy: 46, 2
-  size: 9, 20
-  orig: 9, 20
+  xy: 41, 26
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
-left/1
+left/4
   rotate: false
-  xy: 46, 2
-  size: 9, 20
-  orig: 9, 20
+  xy: 54, 26
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 left/5
   rotate: false
-  xy: 95, 2
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-left/7
-  rotate: false
-  xy: 95, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 67, 26
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 left/6
   rotate: false
-  xy: 131, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 80, 26
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+left/7
+  rotate: false
+  xy: 93, 26
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 left/8
   rotate: false
-  xy: 77, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 106, 26
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+right/0
+  rotate: false
+  xy: 2, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/1
   rotate: false
-  xy: 57, 2
-  size: 9, 20
-  orig: 9, 20
+  xy: 15, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/2
   rotate: false
-  xy: 2, 2
-  size: 16, 20
-  orig: 16, 20
+  xy: 28, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/3
   rotate: false
-  xy: 33, 2
+  xy: 41, 48
   size: 11, 20
   orig: 11, 20
   offset: 0, 0
   index: -1
 right/4
   rotate: false
-  xy: 104, 2
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-right/0
-  rotate: false
-  xy: 104, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 54, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/5
   rotate: false
-  xy: 68, 2
-  size: 7, 20
-  orig: 7, 20
-  offset: 0, 0
-  index: -1
-right/7
-  rotate: false
-  xy: 68, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 67, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/6
   rotate: false
-  xy: 113, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 80, 48
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+right/7
+  rotate: false
+  xy: 93, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1
 right/8
   rotate: false
-  xy: 122, 2
-  size: 7, 20
-  orig: 7, 20
+  xy: 106, 48
+  size: 11, 20
+  orig: 11, 20
   offset: 0, 0
   index: -1

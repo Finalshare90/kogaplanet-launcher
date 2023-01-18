@@ -211,7 +211,7 @@ public class Player{
 	 	    Desenha o sprite atual que foi passado na verifica��o,
 	 	  	ou o sprite default do m�todo Create()
 	 	  */
-	 	 Batch.draw(currentSprite, body.getPosition().x-12, body.getPosition().y-24,25,50);	
+	 	 Batch.draw(currentSprite, body.getPosition().x-15, body.getPosition().y-24,30,50);	
 	 	Batch.end();
 	
 	}
