@@ -73,7 +73,7 @@ public class Player{
 		// Idle Sprites
 		idleSprites.put("a", idleJames.createSprite("Idle_left"));
 		idleSprites.put("w", idleJames.createSprite("Idle_back"));
-		idleSprites.put("s", idleJames.createSprite("Idle_front"));
+		idleSprites.put("s", idleJames.createSprite("Idle_up"));
 		idleSprites.put("d", idleJames.createSprite("Idle_right"));
 		
 		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
@@ -175,9 +175,8 @@ public class Player{
 			// move o BODY do player, mas n�o move necessariamente o Sprite, a posi��o dele � diretamente vinculada com a do body
 			body.setLinearVelocity(body.getLinearVelocity().x, 100);
 			lastInput = "w";
-			//define o sprite atual com base no input
-			currentSprite = idleJames.createSprite(AtlasSprites[0]);
-			
+			walkingJames = createAnimation("up", 8, walkingJamesAtlas);	
+		 	currentSprite = walkingJames.getKeyFrame(stateTime, isPressedW);
 		 	}
 	 
 	 	 if (isPressedS) {	 

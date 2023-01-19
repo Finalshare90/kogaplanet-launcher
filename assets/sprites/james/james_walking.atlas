@@ -1,6 +1,6 @@
 
 james_walking.png
-size: 121, 70
+size: 121, 92
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -189,6 +189,69 @@ right/7
 right/8
   rotate: false
   xy: 106, 48
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/0
+  rotate: false
+  xy: 2, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/1
+  rotate: false
+  xy: 15, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/2
+  rotate: false
+  xy: 28, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/3
+  rotate: false
+  xy: 41, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/4
+  rotate: false
+  xy: 54, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/5
+  rotate: false
+  xy: 67, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/6
+  rotate: false
+  xy: 80, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/7
+  rotate: false
+  xy: 93, 70
+  size: 11, 20
+  orig: 11, 20
+  offset: 0, 0
+  index: -1
+up/8
+  rotate: false
+  xy: 106, 70
   size: 11, 20
   orig: 11, 20
   offset: 0, 0
