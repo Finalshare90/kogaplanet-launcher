@@ -11,7 +11,7 @@ Idle_back
   orig: 11, 20
   offset: 0, 0
   index: -1
-Idle_front
+Idle_up
   rotate: false
   xy: 39, 0
   size: 11, 20
