@@ -33,7 +33,7 @@ public class Tile {
 		return fixtureData;
 	}
 	
-	public void createBody(){
+	public int createBody(){
 		if(isCollidable){
 			bodyDef = new BodyDef();
 			bodyDef.type = BodyType.StaticBody;
@@ -45,6 +45,9 @@ public class Tile {
 			fixtureDef.shape = polygonShape;
 			fixture = body.createFixture(fixtureDef);
 			fixture.setUserData(setFixtureData());
+			return 1;
+		}else {
+			return 0;
 		}
 	}	
 }

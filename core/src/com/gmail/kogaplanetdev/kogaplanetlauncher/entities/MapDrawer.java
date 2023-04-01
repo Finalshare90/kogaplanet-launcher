@@ -12,6 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import finalshare.tileReader.essentials.Reader;
 
+import com.kogaplanet.lunarlatteMarkupLanguage.Parser;
+import com.kogaplanet.lunarlatteMarkupLanguage.TagNode;
+import com.kogaplanet.lunarlatteMarkupLanguage.api.*;
+import com.kogaplanet.lunarlatteMarkupLanguage.util.TagUtil;
+
 public class MapDrawer {
 
 	SpriteBatch batch;
@@ -20,16 +25,16 @@ public class MapDrawer {
 	String textures;
 	Texture blank = new Texture("misc/blank.png");
 	Vector2 originPosition = new Vector2();
-	
+	TagHandler handler;
 	
 	/*
-	 Se o sistema de tile começar a quebrar, comentar código acima e o a baixo e substituir por esse
-	 VVVV
+	 small "if the sh*t goes wrong, break the panel" thing.
+	 
 	 public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	 File.separator + "KogaPlanetLauncher"+ File.separator + "games";
 	 */
 	
-	// Temporário? vai saber, você sabe? eu não sei, pq eu saberia?
+	// gambiarra, don't ask me what it means.
 	static private String mapDialog() {
 		JOptionPane setMapPane = new JOptionPane();
 		JDialog dialog = setMapPane.createDialog("Insert the name of your map");
@@ -45,9 +50,7 @@ public class MapDrawer {
 	
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	File.separator + "KogaPlanetLauncher"+ File.separator + "games" + File.separator + mapName;
-	
-	
-	
+		
 	Reader reader;
 	
 	public MapDrawer(SpriteBatch batch){
@@ -69,33 +72,42 @@ public class MapDrawer {
 	}
 	
 	public void loadMap() {
-		scanFile();
+		try {
+		handler = new TagHandler();
+		handler.parserInit(new Parser(dir + File.separator + "currentMap.3ml"));
+		
+	
+		defineSpawnpoint();
+		TagUtil.printTag(handler.call("spawnpoint"));
+		
+		texturesFactory();
+		TagUtil.printTag(handler.call("symbol"));
+		
 		tileFactory();
 		loadBodies();
+		
+		System.out.println(tiles.get(1).isCollidable);
+		
 		loadTextures();
+		}catch (Exception e) {e.printStackTrace();}
 	}
 	
-	private void scanFile(){
-		
-		// Cria a instância do leitor e lê as texturas e os "bits" de cada tile no 3ml.
-		this.reader = new Reader(dir + File.separator + "currentMap");
-		
-		
-		try {
-			reader.scan();	
-		} catch (Exception e) {e.printStackTrace();}
-		
-		originPosition.x = reader.getOriginPosition()[0];
-		originPosition.y = reader.getOriginPosition()[1];
-		
-		// Gera o path de cada textura
-		texturesFactory();
+	private void defineSpawnpoint(){
+		originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
+		originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));	
 	}
 	
 	private void texturesFactory(){
+		
+		// Texture class with the path's
 		tileTexture = new ArrayList<Texture>();
-		for (int c = 0; c < reader.getTiles().size(); c++) {
-		 tileTexture.add(new Texture(dir + File.separator + reader.getTiles().get(c).getTexture()));		
+		
+		// Tag containing the path's to insert inside of tileTexture
+		TagNode tiles = handler.call("symbol");
+		
+		// Put the data of a tag together inside of tileTexture
+		for (int c = 0; c < tiles.data.size(); c++) {
+		 tileTexture.add(new Texture(dir + File.separator + tiles.data.get(c)));		
 		}
 	}
 	
@@ -103,7 +115,7 @@ public class MapDrawer {
 	
 	private void tileFactory(){			
 		
-		ArrayList<Object> map = reader.getMap();
+		ArrayList<String> map = handler.call("map").data;
 		
 		int currentTileX = 0;
 		int currentTileY = 0;
@@ -126,7 +138,7 @@ public class MapDrawer {
 	
 	private void loadTextures() {
 
-		ArrayList<Object> map = reader.getMap();
+		ArrayList<String> map = handler.call("map").data;
 		System.out.println(tiles.size());
 
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
@@ -141,16 +153,23 @@ public class MapDrawer {
 	
 	private void loadBodies() {
 		
-		ArrayList<Object> map = reader.getMap();
+		ArrayList<String> map = handler.call("map").data;
+		ArrayList<String> collidableTag = handler.call("collidable").data;
 		
-		System.out.println(tiles.size());
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
 			if(!map.get(mapSymbol).equals(";")){
-			int currentSymbol = Integer.parseInt((String)map.get(mapSymbol));		
+			
+			int currentSymbol = Integer.parseInt(map.get(mapSymbol));		
+			
+			
+			if(collidableTag.contains(map.get(mapSymbol))) {
+				tiles.get(mapSymbol).isCollidable = true;
+			}else{
+				tiles.get(mapSymbol).isCollidable = false;
+			}
+						
 			tiles.get(mapSymbol).texture = tileTexture.get(currentSymbol);
-				tiles.get(mapSymbol).isCollidable = reader.getTiles().get(currentSymbol).isCollidable();
-				System.out.println(currentSymbol + " " + tiles.get(currentSymbol).isCollidable);
-				tiles.get(mapSymbol).createBody();
+			tiles.get(mapSymbol).createBody();
 			}
 		}
 	}

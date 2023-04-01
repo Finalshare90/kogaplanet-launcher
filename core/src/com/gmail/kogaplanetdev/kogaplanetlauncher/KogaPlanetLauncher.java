@@ -22,6 +22,7 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.Player;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
+
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 	// entidades
