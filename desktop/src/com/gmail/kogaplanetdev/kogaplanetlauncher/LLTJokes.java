@@ -21,7 +21,7 @@ public class LLTJokes {
 					 "When you're in the fight, don't be useless", "If adam and eve fought would it be a world war?",
 					 "If Pinocchio says that his nose will grow, what happens?", "3l was probably an excuse for Final"
 					 + " not to have to add more content, who knows?", "LunarLutte Team warns: the game runs fine, at"
-					 + "least on testing machines"
+					 + "least on testing machines" + "Now with 3ml-core!"
 					};
 	Random rnd = new Random();
 	

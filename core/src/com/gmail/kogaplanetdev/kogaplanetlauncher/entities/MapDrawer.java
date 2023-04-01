@@ -85,8 +85,14 @@ public class MapDrawer {
 	}
 	
 	private void defineSpawnpoint(){
-		originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
-		originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));	
+		try {
+			originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
+			originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+			originPosition.x = 0;
+			originPosition.y = 0;
+		}
 	}
 	
 	private void texturesFactory(){
