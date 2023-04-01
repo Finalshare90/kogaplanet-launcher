@@ -63,10 +63,10 @@ public class MapDrawer {
 		
 		File file = new File(dir);
 		if(file.exists()) {
-		System.out.println("default directory has already been created, proceeding...");
+		System.err.println("default directory has already been created, proceeding...");
 			}
 			else {
-			System.out.println("default directory does not exist, creating new default directory.");
+			System.err.println("default directory does not exist, creating new default directory.");
 			file.mkdirs();
 		}
 	}
@@ -76,18 +76,10 @@ public class MapDrawer {
 		handler = new TagHandler();
 		handler.parserInit(new Parser(dir + File.separator + "currentMap.3ml"));
 		
-	
-		defineSpawnpoint();
-		TagUtil.printTag(handler.call("spawnpoint"));
-		
+		defineSpawnpoint();		
 		texturesFactory();
-		TagUtil.printTag(handler.call("symbol"));
-		
 		tileFactory();
 		loadBodies();
-		
-		System.out.println(tiles.get(1).isCollidable);
-		
 		loadTextures();
 		}catch (Exception e) {e.printStackTrace();}
 	}
@@ -120,6 +112,7 @@ public class MapDrawer {
 		int currentTileX = 0;
 		int currentTileY = 0;
 		
+		//Create tiles objects and process their positions
 		for(int count = 0; count < map.size(); count++){
 			if(!map.get(count).equals(";")){			
 				tiles.add(new Tile());
@@ -139,13 +132,16 @@ public class MapDrawer {
 	private void loadTextures() {
 
 		ArrayList<String> map = handler.call("map").data;
-		System.out.println(tiles.size());
 
+		
 		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
 			if(!map.get(mapSymbol).equals(";")){
+			
+			// It will create and put the textures in-order
 			tiles.get(mapSymbol).texture = tileTexture.get(
 					Integer.parseInt((String)map.get(mapSymbol)));
 				}else{
+					// Shhh, little Gambiarra here.
 					tiles.get(mapSymbol).texture = blank;
 				}
 			}
@@ -153,23 +149,27 @@ public class MapDrawer {
 	
 	private void loadBodies() {
 		
+		// 3ml API call both tags inside of the parser.
 		ArrayList<String> map = handler.call("map").data;
 		ArrayList<String> collidableTag = handler.call("collidable").data;
 		
-		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
-			if(!map.get(mapSymbol).equals(";")){
+		
+		for(int currentMapPosition = 0; currentMapPosition < tiles.size(); currentMapPosition++){
+			if(!map.get(currentMapPosition).equals(";")){
 			
-			int currentSymbol = Integer.parseInt(map.get(mapSymbol));		
+			// Current tile symbol, the little number in the map, not the map position. 
+			int currentSymbol = Integer.parseInt(map.get(currentMapPosition));
 			
-			
-			if(collidableTag.contains(map.get(mapSymbol))) {
-				tiles.get(mapSymbol).isCollidable = true;
+			// Checks if the symbol it is inside "collidable" Tag
+			if(collidableTag.contains(map.get(currentMapPosition))) {
+				tiles.get(currentMapPosition).isCollidable = true;
 			}else{
-				tiles.get(mapSymbol).isCollidable = false;
+				tiles.get(currentMapPosition).isCollidable = false;
 			}
-						
-			tiles.get(mapSymbol).texture = tileTexture.get(currentSymbol);
-			tiles.get(mapSymbol).createBody();
+			
+			// Put the textures, bodies and the tiles together
+			tiles.get(currentMapPosition).texture = tileTexture.get(currentSymbol);
+			tiles.get(currentMapPosition).createBody();
 			}
 		}
 	}
