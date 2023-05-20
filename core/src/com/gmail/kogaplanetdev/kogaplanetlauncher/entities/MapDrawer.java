@@ -174,9 +174,6 @@ public class MapDrawer {
 			// It will create and put the textures in-order
 			tileMap.get(mapSymbol).texture = tileTexture.get(
 					Integer.parseInt((String)map.get(mapSymbol)));
-				}else{
-					// Shhh, little Gambiarra here.
-					tileMap.get(mapSymbol).texture = blank;
 				}
 			}
 		}
