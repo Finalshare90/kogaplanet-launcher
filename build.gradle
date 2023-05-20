@@ -14,7 +14,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '3.0.0-alpha-(Build Abyssinian)'
+    version = '3.0.1-alpha-(Build Abyssinian)'
     ext {
         appName = "Kogaplanet-Laucher"
         gdxVersion = '1.10.0'

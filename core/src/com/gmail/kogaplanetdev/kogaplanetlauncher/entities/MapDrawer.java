@@ -21,7 +21,7 @@ public class MapDrawer {
 
 	SpriteBatch batch;
 	ArrayList<Texture> tileTexture;
-	ArrayList<Tile> tiles = new ArrayList<Tile>();	
+	ArrayList<Tile> tileMap = new ArrayList<Tile>();	
 	String textures;
 	Texture blank = new Texture("misc/blank.png");
 	Vector2 originPosition = new Vector2();
@@ -75,24 +75,50 @@ public class MapDrawer {
 		try {
 		handler = new TagHandler();
 		handler.parserInit(new Parser(dir + File.separator + "currentMap.3ml"));
-		
-		defineSpawnpoint();		
-		texturesFactory();
-		tileFactory();
-		loadBodies();
-		loadTextures();
 		}catch (Exception e) {e.printStackTrace();}
+		
+		TagNode mapTag = handler.call("map");
+		
+		defineSpawnpoint();
+		
+		texturesFactory();
+		
+		// Produces each tile instance, not the body or his texture,
+		// just both the instance and his position. 
+		calculateTilePos(
+				mapTag
+				);
+		
+		
+		// i'm too lazy to handle it:)
+		try {
+			
+		// Create *some* tiles physics by receiving the current tile layer and his raw tag data.
+		loadBodies(
+				tileMap,
+				mapTag
+				);
+		
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		loadTextures(mapTag);
+	
 	}
 	
-	private void defineSpawnpoint(){
+	private void defineSpawnpoint(){	
+		
 		try {
-			originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
-			originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
+		originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
+		originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
 		}catch (NullPointerException e) {
-			e.printStackTrace();
+			System.err.println("spawnpoint not found, setting spawnpoint to 0,0");
 			originPosition.x = 0;
 			originPosition.y = 0;
 		}
+		
 	}
 	
 	private void texturesFactory(){
@@ -111,9 +137,11 @@ public class MapDrawer {
 	
 	
 	
-	private void tileFactory(){			
+	
+	// Creates the instance of a specific tile layer and define his position.
+ 	private void calculateTilePos(TagNode layer){			
 		
-		ArrayList<String> map = handler.call("map").data;
+		ArrayList<String> map = layer.data;
 		
 		int currentTileX = 0;
 		int currentTileY = 0;
@@ -121,46 +149,47 @@ public class MapDrawer {
 		//Create tiles objects and process their positions
 		for(int count = 0; count < map.size(); count++){
 			if(!map.get(count).equals(";")){			
-				tiles.add(new Tile());
-				tiles.get(count).y = currentTileY;
- 				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
-				currentTileX = tiles.get(count).x;
+				tileMap.add(new Tile());
+				tileMap.get(count).y = currentTileY;
+ 				tileMap.get(count).x = currentTileX + tileTexture.get(0).getWidth();
+				currentTileX = tileMap.get(count).x;
 				}else{
-				tiles.add(new Tile());
-				tiles.get(count).y = currentTileY;
- 				tiles.get(count).x = currentTileX + tileTexture.get(0).getWidth();
+				
+				map.remove(count);
 				currentTileX = 0;
 				currentTileY = currentTileY - tileTexture.get(0).getHeight();
+				count--;
 				}
 		}
 		}
 	
-	private void loadTextures() {
+	private void loadTextures(TagNode mapData) {
 
-		ArrayList<String> map = handler.call("map").data;
+		ArrayList<String> map = mapData.data;
 
 		
-		for(int mapSymbol = 0; mapSymbol < tiles.size(); mapSymbol++){
+		for(int mapSymbol = 0; mapSymbol < tileMap.size(); mapSymbol++){
 			if(!map.get(mapSymbol).equals(";")){
 			
 			// It will create and put the textures in-order
-			tiles.get(mapSymbol).texture = tileTexture.get(
+			tileMap.get(mapSymbol).texture = tileTexture.get(
 					Integer.parseInt((String)map.get(mapSymbol)));
 				}else{
 					// Shhh, little Gambiarra here.
-					tiles.get(mapSymbol).texture = blank;
+					tileMap.get(mapSymbol).texture = blank;
 				}
 			}
 		}
 	
-	private void loadBodies() {
+	private void loadBodies(ArrayList<Tile> tileMap, TagNode mapData) {
 		
-		// 3ml API call both tags inside of the parser.
-		ArrayList<String> map = handler.call("map").data;
+		
+		// try to use a 3ml API call there.
+		ArrayList<String> map = mapData.data;		
 		ArrayList<String> collidableTag = handler.call("collidable").data;
 		
 		
-		for(int currentMapPosition = 0; currentMapPosition < tiles.size(); currentMapPosition++){
+		for(int currentMapPosition = 0; currentMapPosition < tileMap.size(); currentMapPosition++){
 			if(!map.get(currentMapPosition).equals(";")){
 			
 			// Current tile symbol, the little number in the map, not the map position. 
@@ -168,22 +197,22 @@ public class MapDrawer {
 			
 			// Checks if the symbol it is inside "collidable" Tag
 			if(collidableTag.contains(map.get(currentMapPosition))) {
-				tiles.get(currentMapPosition).isCollidable = true;
+				tileMap.get(currentMapPosition).isCollidable = true;
 			}else{
-				tiles.get(currentMapPosition).isCollidable = false;
+				tileMap.get(currentMapPosition).isCollidable = false;
 			}
 			
 			// Put the textures, bodies and the tiles together
-			tiles.get(currentMapPosition).texture = tileTexture.get(currentSymbol);
-			tiles.get(currentMapPosition).createBody();
+			tileMap.get(currentMapPosition).texture = tileTexture.get(currentSymbol);
+			tileMap.get(currentMapPosition).createBody();
 			}
 		}
 	}
 	
 	public void renderMap(SpriteBatch batch){
 		batch.begin();
-		for(int count = 0; count < tiles.size(); count++){
-			batch.draw(tiles.get(count).texture, tiles.get(count).x, tiles.get(count).y);
+		for(int count = 0; count < tileMap.size(); count++){
+			batch.draw(tileMap.get(count).texture, tileMap.get(count).x, tileMap.get(count).y);
 		}
 		batch.end();
 	}
