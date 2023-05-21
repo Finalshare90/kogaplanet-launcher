@@ -26,7 +26,7 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
 	// entidades
-	public static Player PLAYER;
+	private Player player;
 	
 	// Mover para uma classe de entidade
 	Rectangle rectangle;
@@ -71,17 +71,17 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		mapDrawer.loadMap();
 	
 		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
-		PLAYER = new Player(entitiesBatch, idleJames, walkingJames);
+		player = new Player(entitiesBatch, idleJames, walkingJames);
 		String SpritesNames[] = {"Idle_back","Idle_front","Idle_right","Idle_left"};
-		PLAYER.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
+		player.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		
 		// Boas pr�ticas em locais errados.java 
 		for(int count = 0; count < SpritesNames.length ; count++){
-		PLAYER.setAtlasSprites(count, SpritesNames[count]);
+		player.setAtlasSprites(count, SpritesNames[count]);
 		}
 		
 		// Classe de User interface:)
-		gui = new PlayerGui(entitiesBatch, PLAYER);
+		gui = new PlayerGui(entitiesBatch, player);
 
 		// debug
 		debugRenderer = new Box2DDebugRenderer();
@@ -104,7 +104,7 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		mapDrawer.renderMap(entitiesBatch);
 		
 		// O player come�a a sua pr�pria instancia de renderiza��o.
-		PLAYER.update();
+		player.update();
 		
 		// update de UI
 		gui.update(entitiesBatch);

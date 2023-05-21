@@ -10,13 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
+import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.Player;
 
 public class MenuGui {
 	
@@ -27,9 +27,10 @@ public class MenuGui {
 	CheckBox fpsCheckBox;
 	Label currentMap, menuLabel;
 	BitmapFont font;
+	private Player player;
 	
 	
-	public MenuGui(Skin menuSkin, Stage stage, Table fpsTable){
+	public MenuGui(Skin menuSkin, Stage stage, Table fpsTable, Player player){
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/PrStart.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -38,7 +39,7 @@ public class MenuGui {
 		
 		this.menuSkin = menuSkin;
 		this.fpsTable = fpsTable;
-		
+		this.player = player;
 		menuSkin.add("font", font);
 		createMenu();
 		stage.addActor(menuGroup);
@@ -63,7 +64,7 @@ public class MenuGui {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
-				KogaPlanetLauncher.PLAYER.isAlive(false);
+				player.isAlive(false);
 				isClicked();
 			}		
 		});

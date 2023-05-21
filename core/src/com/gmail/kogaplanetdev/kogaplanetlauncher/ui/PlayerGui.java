@@ -80,7 +80,7 @@ public class PlayerGui{
 	    
 	    stage.addActor(buttonContainer);
 	    
-	    menuGui = new MenuGui(uiSkin, stage, fpsTable);
+	    menuGui = new MenuGui(uiSkin, stage, fpsTable, player);
 	    
 	    kgpButton.getClickListener();
 	    //ButtonActionListener 
