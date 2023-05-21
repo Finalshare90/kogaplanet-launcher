@@ -25,11 +25,10 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
-	// entidades
+	// Entities
 	private Player player;
 	
 	// Mover para uma classe de entidade
-	Rectangle rectangle;
 	FPSLogger fpsLogger;
 	
 	// Assets
@@ -41,24 +40,18 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	MapDrawer mapDrawer;
 	
     // Physics go brrr haha
-    public static World WORLD;
-    BodyDef bodyDef;
-    PolygonShape poly;
-    Body body;
-    FixtureDef fixtureDef;
-    Fixture fixture;
+    public static World WORLD;   
     Box2DDebugRenderer debugRenderer;
    
 	@Override
 	public void create () {
 		
-		// Cria��o do mundo
+		// The physic simulation world.
 		WORLD = new World(new Vector2(0 , 0), true);	
 		
-		// S� para usar como efeito de compara��o, inutil, mas legal deixar
 		fpsLogger = new FPSLogger();
 		
-		// Gr�ficos
+		// Assets
 		entitiesBatch = new SpriteBatch();
 		idleJames = new TextureAtlas("sprites/james/james_idle.atlas");	
 		walkingJames = new TextureAtlas("sprites/james/james_walking.atlas");
@@ -66,21 +59,21 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		logoKGP = new Texture("logos/256x_kgp.png");
 		KogaSprite = new Sprite(logoKGP);
 		
-		// Sistema de tiles
+		// Tile System
 		mapDrawer = new MapDrawer(entitiesBatch);
 		mapDrawer.loadMap();
 	
-		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
+		// TODO: do a better way of loading graphics into the player.
 		player = new Player(entitiesBatch, idleJames, walkingJames);
 		String SpritesNames[] = {"Idle_back","Idle_front","Idle_right","Idle_left"};
 		player.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		
-		// Boas pr�ticas em locais errados.java 
+		// what the fuck is this?
 		for(int count = 0; count < SpritesNames.length ; count++){
-		player.setAtlasSprites(count, SpritesNames[count]);
+			player.setAtlasSprites(count, SpritesNames[count]);
 		}
 		
-		// Classe de User interface:)
+		// User GUI:)
 		gui = new PlayerGui(entitiesBatch, player);
 
 		// debug
@@ -94,19 +87,20 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	@Override
 	public void render () {
 	
+		// Simulate the world physics
 		WORLD.step(Gdx.graphics.getDeltaTime(), 8, 3);
 			
-		//Utilidades para debug
+		// Debug utils:)
 		ScreenUtils.clear(Color.SLATE);
 		fpsLogger.log();
 		
-		//Renderiza cada tile do mapa
+		// Render the map tiles
 		mapDrawer.renderMap(entitiesBatch);
 		
-		// O player come�a a sua pr�pria instancia de renderiza��o.
+		// Player starts his own render
 		player.update();
 		
-		// update de UI
+		// UI update
 		gui.update(entitiesBatch);
 		gui.update(debugRenderer);
 		

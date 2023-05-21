@@ -21,7 +21,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player{
 		
-	//SpriteBatch, armazene uma instancia aqui para poder desenhar o player
+	// Sprite Buffer, stores the Sprite, and flushes him to the game.
 	private SpriteBatch Batch; 
 	private String AtlasSprites[] = new String[4]; //outra gambiarra, ele vai armazenar os nomes de cada sprite do spritesheet
 	private TextureAtlas idleJames;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 

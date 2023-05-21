@@ -16,7 +16,7 @@ public class CollisionHandler implements ContactListener {
 	@Override
 	public void beginContact(Contact arg0) {
 	
-		// Pequeno exemplo de como trabalhar com colisões pequenas tile-player		
+		// Get the attributes of both bodies.
 		fixtureDataA = (HashMap<String, Object>)arg0.getFixtureA().getUserData();
 		fixtureDataB = (HashMap<String, Object>)arg0.getFixtureB().getUserData();
 		
