@@ -2,6 +2,8 @@ package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -15,17 +17,17 @@ import finalshare.tileReader.essentials.Reader;
 import com.kogaplanet.lunarlatteMarkupLanguage.Parser;
 import com.kogaplanet.lunarlatteMarkupLanguage.TagNode;
 import com.kogaplanet.lunarlatteMarkupLanguage.api.*;
-import com.kogaplanet.lunarlatteMarkupLanguage.util.TagUtil;
 
 public class MapDrawer {
 
 	SpriteBatch batch;
 	ArrayList<Texture> tileTexture;
-	ArrayList<Tile> tileMap = new ArrayList<Tile>();	
+	ArrayList<List<Tile>> tileMap = new ArrayList<List<Tile>>();	
 	String textures;
 	Texture blank = new Texture("misc/blank.png");
 	Vector2 originPosition = new Vector2();
 	TagHandler handler;
+	TagNode mapTag;
 	
 	/*
 	 small "if the sh*t goes wrong, break the panel" thing.
@@ -72,12 +74,16 @@ public class MapDrawer {
 	}
 	
 	public void loadMap() {
+		
 		try {
-		handler = new TagHandler();
-		handler.parserInit(new Parser(dir + File.separator + "currentMap.3ml"));
+			handler = new TagHandler();
+			handler.parserInit(new Parser(dir + File.separator + "currentMap.3ml"));
 		}catch (Exception e) {e.printStackTrace();}
 		
-		TagNode mapTag = handler.call("map");
+		
+		mapTag = handler.call("map");
+		HashMap<String, Layer> map = getLayers(mapTag);
+		
 		
 		defineSpawnpoint();
 		
@@ -85,26 +91,23 @@ public class MapDrawer {
 		
 		// Produces each tile instance, not the body or his texture,
 		// just both the instance and his position. 
-		calculateTilePos(
-				mapTag
-				);
+		calculateTilePos(map, mapTag);
+		System.out.println(tileMap.get(0).size());
+		System.out.println(tileMap.get(1).size());
 		
 		
 		// i'm too lazy to handle it:)
 		try {
 			
 		// Create *some* tiles physics by receiving the current tile layer and his raw tag data.
-		loadBodies(
-				tileMap,
-				mapTag
-				);
+		loadBodies(map, tileMap, mapTag);
 		
 		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		loadTextures(mapTag);
+		loadTextures(map, mapTag);
 	
 	}
 	
@@ -113,6 +116,7 @@ public class MapDrawer {
 		try {
 		originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
 		originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
+		
 		}catch (NullPointerException e) {
 			System.err.println("spawnpoint not found, setting spawnpoint to 0,0");
 			originPosition.x = 0;
@@ -139,77 +143,113 @@ public class MapDrawer {
 	
 	
 	// Creates the instance of a specific tile layer and define his position.
- 	private void calculateTilePos(TagNode layer){			
+ 	private void calculateTilePos(HashMap<String, Layer> map, TagNode mapTag){			
 		
-		ArrayList<String> map = layer.data;
+ 		
+ 		for(int c = 0; c < map.size(); c++){
+ 		
+ 			Layer layerData = map.get(mapTag.data.get(c));
+ 			ArrayList<String> layerMap = layerData.tileMap;
+ 			
+ 		
+ 			int currentTileX = 0;
+ 			int currentTileY = 0;
 		
-		int currentTileX = 0;
-		int currentTileY = 0;
-		
-		//Create tiles objects and process their positions
-		for(int count = 0; count < map.size(); count++){
-			if(!map.get(count).equals(";")){			
-				tileMap.add(new Tile());
-				tileMap.get(count).y = currentTileY;
- 				tileMap.get(count).x = currentTileX + tileTexture.get(0).getWidth();
-				currentTileX = tileMap.get(count).x;
-				}else{
-				
-				map.remove(count);
+ 			//Create tiles objects and process their positions
+ 			tileMap.add(new ArrayList<Tile>());
+ 			
+ 			for(int tile = 0; tile < layerMap.size(); tile++){
+ 				if(!layerMap.get(tile).equals(";")){			
+ 					tileMap.get(c).add(new Tile(currentTileX + tileTexture.get(0).getWidth(), currentTileY));
+ 					currentTileX = tileMap.get(c).get(tile).x;
+ 				}
+			
+ 				else{
+				layerMap.remove(tile);
 				currentTileX = 0;
 				currentTileY = currentTileY - tileTexture.get(0).getHeight();
-				count--;
+				tile--;
 				}
-		}
-		}
+			}
+ 		}
+	}
+ 	
 	
-	private void loadTextures(TagNode mapData) {
+	private void loadTextures(HashMap<String, Layer> map, TagNode mapTag) {
 
-		ArrayList<String> map = mapData.data;
-
-		
-		for(int mapSymbol = 0; mapSymbol < tileMap.size(); mapSymbol++){
-			if(!map.get(mapSymbol).equals(";")){
 			
-			// It will create and put the textures in-order
-			tileMap.get(mapSymbol).texture = tileTexture.get(
-					Integer.parseInt((String)map.get(mapSymbol)));
+		for(int layer = 0; layer < mapTag.data.size(); layer++) {
+			Layer layerData = map.get(mapTag.data.get(layer));
+			ArrayList<String> layerMap = layerData.tileMap;
+		
+			for(int mapSymbol = 0; mapSymbol < tileMap.get(layer).size(); mapSymbol++){
+				if(!layerMap.get(mapSymbol).equals(";") && !layerMap.get(mapSymbol).equals("B")){
+					// creates and put the textures in-order
+					tileMap.get(layer).get(mapSymbol).texture = tileTexture.get(Integer.parseInt(layerMap.get(mapSymbol)));					
+					}
 				}
 			}
 		}
 	
-	private void loadBodies(ArrayList<Tile> tileMap, TagNode mapData) {
+	
+	
+	private void loadBodies(HashMap<String, Layer> map, ArrayList<List<Tile>> tileMap, TagNode mapData) {
 		
 		
 		// try to use a 3ml API call there.
-		ArrayList<String> map = mapData.data;		
+		//ArrayList<String> map = mapData.data;		
 		ArrayList<String> collidableTag = handler.call("collidable").data;
 		
 		
-		for(int currentMapPosition = 0; currentMapPosition < tileMap.size(); currentMapPosition++){
-			if(!map.get(currentMapPosition).equals(";")){
+		for(int layer = 0; layer < tileMap.size(); layer++) {
 			
-			// Current tile symbol, the little number in the map, not the map position. 
-			int currentSymbol = Integer.parseInt(map.get(currentMapPosition));
+			Layer layerData = map.get(mapTag.data.get(layer));
+			ArrayList<String> layerMap = layerData.tileMap;
 			
-			// Checks if the symbol it is inside "collidable" Tag
-			if(collidableTag.contains(map.get(currentMapPosition))) {
-				tileMap.get(currentMapPosition).isCollidable = true;
-			}else{
-				tileMap.get(currentMapPosition).isCollidable = false;
-			}
+			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
+				if(!layerMap.get(tile).equals(";") && !layerMap.get(tile).equals("B")){
 			
-			// Put the textures, bodies and the tiles together
-			tileMap.get(currentMapPosition).texture = tileTexture.get(currentSymbol);
-			tileMap.get(currentMapPosition).createBody();
+					// Current tile symbol, the little number in the map, not the map position. 
+					int currentSymbol = Integer.parseInt(layerMap.get(tile));
+			
+					// Checks if the symbol it is inside "collidable" Tag
+					if(collidableTag.contains(layerMap.get(tile))) {
+						tileMap.get(layer).get(tile).isCollidable = true;
+					}else{
+						tileMap.get(layer).get(tile).isCollidable = false;
+					}
+			
+					// Put the textures, bodies and the tiles together
+					tileMap.get(layer).get(tile).texture = tileTexture.get(currentSymbol);
+					tileMap.get(layer).get(tile).createBody();
+				}
 			}
 		}
 	}
 	
+	private HashMap<String, Layer> getLayers(TagNode mapTag) {
+	
+		HashMap<String, Layer> layers = new HashMap<>();
+		
+		for(int currentLayer = 0; currentLayer < mapTag.data.size(); currentLayer++){
+			
+			String layerName = mapTag.data.get(currentLayer);
+			TagNode layerTag = handler.call(layerName);
+			
+			
+			layers.put(layerName, new Layer(layerTag.data, currentLayer));
+		}
+		
+		return layers;
+	}
+	
 	public void renderMap(SpriteBatch batch){
 		batch.begin();
-		for(int count = 0; count < tileMap.size(); count++){
-			batch.draw(tileMap.get(count).texture, tileMap.get(count).x, tileMap.get(count).y);
+		
+		for(int layer = 0; layer < tileMap.size(); layer++) {
+			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
+				batch.draw(tileMap.get(layer).get(tile).texture, tileMap.get(layer).get(tile).x, tileMap.get(layer).get(tile).y);
+			}
 		}
 		batch.end();
 	}

@@ -22,9 +22,10 @@ public class Tile {
 	FixtureDef fixtureDef;
 	Fixture fixture;
 	
-	public Tile(){
-		x = 0;
-		y = 0;
+	public Tile(int x, int y){
+		this.x = x;
+		this.y = y;
+		texture = new Texture("misc/blank.png");
 	}
 
 	private HashMap<String, Object> setFixtureData(){

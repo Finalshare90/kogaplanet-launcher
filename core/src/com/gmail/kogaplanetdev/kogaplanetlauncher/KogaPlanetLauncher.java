@@ -25,6 +25,15 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
+	
+	String args[];
+	
+	public KogaPlanetLauncher(String myArgs[]){
+		args = myArgs;
+		
+	}
+	
+	
 	// Entities
 	private Player player;
 	

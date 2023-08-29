@@ -20,6 +20,7 @@ public class CollisionHandler implements ContactListener {
 		fixtureDataA = (HashMap<String, Object>)arg0.getFixtureA().getUserData();
 		fixtureDataB = (HashMap<String, Object>)arg0.getFixtureB().getUserData();
 		
+		
 		try {
 			if((Boolean)fixtureDataA.get("canKill") && (Boolean)fixtureDataB.get("canBeKilled")){
 				fixtureDataB.replace("isAlive", false);
