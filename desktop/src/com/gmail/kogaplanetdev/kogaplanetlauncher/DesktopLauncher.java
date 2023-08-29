@@ -20,6 +20,6 @@ public class DesktopLauncher {
 		config.setWindowIcon("logos/256x_kgp.png");
 		config.setTitle("KogaPlanet Launcher 3.0.1 alpha(Build Abyssinian) " + jokes.chooseAjoke());	
 		
-		new Lwjgl3Application(new KogaPlanetLauncher(arg), config);
+		new Lwjgl3Application(new KogaPlanetLauncher(), config);
 	}
 }
