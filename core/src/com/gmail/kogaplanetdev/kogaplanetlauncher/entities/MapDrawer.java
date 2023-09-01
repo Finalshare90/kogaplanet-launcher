@@ -92,9 +92,6 @@ public class MapDrawer {
 		// Produces each tile instance, not the body or his texture,
 		// just both the instance and his position. 
 		calculateTilePos(map, mapTag);
-		System.out.println(tileMap.get(0).size());
-		System.out.println(tileMap.get(1).size());
-		
 		
 		// i'm too lazy to handle it:)
 		try {

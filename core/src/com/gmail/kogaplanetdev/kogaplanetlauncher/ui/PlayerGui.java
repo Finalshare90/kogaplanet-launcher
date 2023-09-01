@@ -35,13 +35,13 @@ public class PlayerGui{
 	Table fpsTable;
 	Container<Actor> buttonContainer, barContainer;
 	
-	TextureAtlas uiTexture = new TextureAtlas("misc/Planet_gui.atlas");
+	TextureAtlas uiTexture = new TextureAtlas("misc/HarmonyUI.atlas");
 	Skin uiSkin = new Skin(uiTexture);
 
 	Label fpsLabel;
 	LabelStyle labelStyle;
 	
-	Button kgpButton = createButton(uiSkin, "Buttons/menu", "Buttons/button_down");
+	Button kgpButton = createButton(uiSkin, "Buttons/menu", "Buttons/menu_down");
 	
 	MenuGui menuGui;
 	
@@ -76,7 +76,7 @@ public class PlayerGui{
 	    
 	    buttonContainer = new Container<Actor>(); 
 	    buttonContainer.setActor(kgpButton);
-	    buttonContainer.size(40,40);
+	    buttonContainer.size(50,50);
 	    
 	    stage.addActor(buttonContainer);
 	    
@@ -89,14 +89,14 @@ public class PlayerGui{
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
 	    		super.clicked(event, x, y);
-	    		menuGui.isClicked();
+	    		menuGui.setClicked();
 	    		}
 	    	}
 	    );
 	   
 	    
 	    barContainer = new Container<Actor>();
-	    barContainer.setSize(1366, 80);
+	    barContainer.setSize(Gdx.graphics.getWidth() / 1.5f, 70);
 	    barContainer.background(uiSkin.newDrawable("Windows/top_bar"));
 	    
 	    stage.addActor(barContainer);
@@ -131,19 +131,18 @@ public class PlayerGui{
 		
 		//FPS label update
 		fpsLabel.setText(getFps());
-		fpsTable.setX(player.getX() + 570);
-		fpsTable.setPosition(player.getX() + 470,player.getY() + 318);
+		fpsTable.setPosition(player.getX() + 90 ,player.getY() + 285);
 		
-		buttonContainer.setPosition(player.getX() - 650,player.getY() + 325);
+		buttonContainer.setPosition(player.getX() - 180, player.getY() + 295);
 		
 		barContainer.toBack();
-		barContainer.setPosition(player.getX() - 683, player.getY() + 295);
+		barContainer.setPosition(player.getX() - 230, player.getY() + 260);
 		
-		menuGui.getGroup().setPosition(player.getX()-440, player.getY()- 320);
+		menuGui.getGroup().setPosition(player.getX()-340, player.getY()- 260);
 		
 			Boolean isPressedESC = Gdx.input.isKeyJustPressed(Keys.ESCAPE);
 		    if(isPressedESC){
-		    	menuGui.isClicked();
+		    	menuGui.setClicked();
 		    }
 	}	
 	

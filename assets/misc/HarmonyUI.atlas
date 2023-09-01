@@ -1,0 +1,111 @@
+
+HarmonyUI.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Buttons/check_off
+  rotate: false
+  xy: 940, 634
+  size: 60, 50
+  orig: 60, 50
+  offset: 0, 0
+  index: -1
+Buttons/check_on
+  rotate: false
+  xy: 772, 488
+  size: 60, 50
+  orig: 60, 50
+  offset: 0, 0
+  index: -1
+Buttons/close
+  rotate: false
+  xy: 1504, 1731
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+Buttons/leave
+  rotate: false
+  xy: 1156, 784
+  size: 700, 120
+  orig: 700, 120
+  offset: 0, 0
+  index: -1
+Buttons/leave_selected
+  rotate: false
+  xy: 2, 246
+  size: 700, 120
+  orig: 700, 120
+  offset: 0, 0
+  index: -1
+Buttons/menu
+  rotate: false
+  xy: 1806, 1827
+  size: 216, 204
+  orig: 216, 204
+  offset: 0, 0
+  index: -1
+Buttons/menu_down
+  rotate: false
+  xy: 1504, 1525
+  size: 216, 204
+  orig: 216, 204
+  offset: 0, 0
+  index: -1
+Buttons/reset
+  rotate: false
+  xy: 2, 124
+  size: 700, 120
+  orig: 700, 120
+  offset: 0, 0
+  index: -1
+Buttons/reset_selected
+  rotate: false
+  xy: 2, 2
+  size: 700, 120
+  orig: 700, 120
+  offset: 0, 0
+  index: -1
+HP/empty
+  rotate: false
+  xy: 2, 368
+  size: 768, 84
+  orig: 768, 84
+  offset: 0, 0
+  index: -1
+HP/full
+  rotate: false
+  xy: 2, 454
+  size: 768, 84
+  orig: 768, 84
+  offset: 0, 0
+  index: -1
+Loading/load_empty
+  rotate: false
+  xy: 2, 796
+  size: 1152, 108
+  orig: 1152, 108
+  offset: 0, 0
+  index: -1
+Loading/load_full
+  rotate: false
+  xy: 2, 686
+  size: 1152, 108
+  orig: 1152, 108
+  offset: 0, 0
+  index: -1
+Windows/menu
+  rotate: false
+  xy: 2, 906
+  size: 1500, 1125
+  orig: 1500, 1125
+  offset: 0, 0
+  index: -1
+Windows/top_bar
+  rotate: false
+  xy: 2, 540
+  size: 936, 144
+  orig: 936, 144
+  offset: 0, 0
+  index: -1
