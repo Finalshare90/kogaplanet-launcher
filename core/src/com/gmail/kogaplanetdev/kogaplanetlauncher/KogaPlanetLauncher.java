@@ -18,29 +18,29 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
+	//Values
 	
 	// Entities
 	private Player player;
 	
 	// Mover para uma classe de entidade
-	FPSLogger fpsLogger;
+	private FPSLogger fpsLogger;
 	
 	// Assets
-	Texture logoKGP;
-	TextureAtlas idleJames, walkingJames;
-	SpriteBatch entitiesBatch;
-	PlayerGui gui;
-	MapDrawer mapDrawer;
+	private Texture logoKGP;
+	private TextureAtlas idleJames, walkingJames;
+	private SpriteBatch entitiesBatch;
+	private PlayerGui gui;
+	private MapDrawer mapDrawer;
 	
     // Physics go brrr haha
-    public static World WORLD;   
-    Box2DDebugRenderer debugRenderer;
+	private final World WORLD = new World(new Vector2(0 , 0), true);;   
+    private Box2DDebugRenderer debugRenderer;
    
 	@Override
 	public void create () {
 		
-		// The physic simulation world.
-		WORLD = new World(new Vector2(0 , 0), true);	
+		// The physic simulation world.	
 		
 		fpsLogger = new FPSLogger();
 		
@@ -50,11 +50,11 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		walkingJames = new TextureAtlas("sprites/james/james_walking.atlas");
 				
 		// Tile System
-		mapDrawer = new MapDrawer();
+		mapDrawer = new MapDrawer(WORLD);
 		mapDrawer.loadMap();
 	
 		// TODO: do a better way of loading graphics into the player.
-		player = new Player(idleJames, walkingJames);
+		player = new Player(idleJames, walkingJames, WORLD, mapDrawer.getMapHeight(), mapDrawer.getMapWidth());
 		String SpritesNames[] = {"Idle_back","Idle_front","Idle_right","Idle_left"};
 		player.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		

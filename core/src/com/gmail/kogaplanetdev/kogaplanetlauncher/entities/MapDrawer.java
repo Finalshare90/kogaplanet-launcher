@@ -11,24 +11,26 @@ import javax.swing.JOptionPane;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.kogaplanet.lunarlatteMarkupLanguage.Parser;
+import com.kogaplanet.lunarlatteMarkupLanguage.TagNode;
+import com.kogaplanet.lunarlatteMarkupLanguage.api.TagHandler;
 
 import finalshare.tileReader.essentials.Reader;
 
-import com.kogaplanet.lunarlatteMarkupLanguage.Parser;
-import com.kogaplanet.lunarlatteMarkupLanguage.TagNode;
-import com.kogaplanet.lunarlatteMarkupLanguage.api.*;
-
 public class MapDrawer {
 
-	SpriteBatch batch;
-	ArrayList<Texture> tileTexture;
-	ArrayList<List<Tile>> tileMap = new ArrayList<List<Tile>>();	
-	String textures;
-	Texture blank = new Texture("misc/blank.png");
-	Vector2 originPosition = new Vector2();
-	TagHandler handler;
-	TagNode mapTag;
-	
+	private SpriteBatch batch;
+	private ArrayList<Texture> tileTexture;
+	private ArrayList<List<Tile>> tileMap = new ArrayList<List<Tile>>();	
+	private String textures;
+	private Texture blank = new Texture("misc/blank.png");
+	private Vector2 originPosition = new Vector2();
+	private TagHandler handler;
+	private TagNode mapTag;
+	private int mapHeight;
+	private int mapWidth;
+	private World WORLD;
 	/*
 	 small "if the sh*t goes wrong, break the panel" thing.
 	 
@@ -53,9 +55,10 @@ public class MapDrawer {
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	File.separator + "KogaPlanetLauncher"+ File.separator + "games" + File.separator + mapName;
 		
-	Reader reader;
+	private Reader reader;
 	
-	public MapDrawer(){
+	public MapDrawer(World WORLD){
+		this.WORLD = WORLD;
 		verifyDirectory();
 	}
 	
@@ -87,7 +90,8 @@ public class MapDrawer {
 		defineSpawnpoint();
 		
 		texturesFactory();
-		
+		mapHeight(map, mapTag);
+		mapWidth(map, mapTag);
 		// Produces each tile instance, not the body or his texture,
 		// just both the instance and his position. 
 		calculateTilePos(map, mapTag);
@@ -155,9 +159,10 @@ public class MapDrawer {
  			tileMap.add(new ArrayList<Tile>());
  			
  			for(int tile = 0; tile < layerMap.size(); tile++){
- 				if(!layerMap.get(tile).equals(";")){			
- 					tileMap.get(c).add(new Tile(currentTileX + tileTexture.get(0).getWidth(), currentTileY));
- 					currentTileX = tileMap.get(c).get(tile).x;
+ 				if(!layerMap.get(tile).equals(";")){
+ 					
+ 					tileMap.get(c).add(new Tile(currentTileX + tileTexture.get(0).getWidth(), currentTileY, WORLD));
+ 					currentTileX = tileMap.get(c).get(tile).getX();
  				}
 			
  				else{
@@ -181,7 +186,7 @@ public class MapDrawer {
 			for(int mapSymbol = 0; mapSymbol < tileMap.get(layer).size(); mapSymbol++){
 				if(!layerMap.get(mapSymbol).equals(";") && !layerMap.get(mapSymbol).equals("B")){
 					// creates and put the textures in-order
-					tileMap.get(layer).get(mapSymbol).texture = tileTexture.get(Integer.parseInt(layerMap.get(mapSymbol)));					
+					tileMap.get(layer).get(mapSymbol).setTileTexture(tileTexture.get(Integer.parseInt(layerMap.get(mapSymbol))));					
 					}
 				}
 			}
@@ -210,13 +215,13 @@ public class MapDrawer {
 			
 					// Checks if the symbol it is inside "collidable" Tag
 					if(collidableTag.contains(layerMap.get(tile))) {
-						tileMap.get(layer).get(tile).isCollidable = true;
+						tileMap.get(layer).get(tile).setIsCollidable(true);
 					}else{
-						tileMap.get(layer).get(tile).isCollidable = false;
+						tileMap.get(layer).get(tile).setIsCollidable(false);
 					}
 			
 					// Put the textures, bodies and the tiles together
-					tileMap.get(layer).get(tile).texture = tileTexture.get(currentSymbol);
+					tileMap.get(layer).get(tile).setTileTexture(tileTexture.get(currentSymbol));
 					tileMap.get(layer).get(tile).createBody();
 				}
 			}
@@ -244,7 +249,7 @@ public class MapDrawer {
 		
 		for(int layer = 0; layer < tileMap.size(); layer++) {
 			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
-				batch.draw(tileMap.get(layer).get(tile).texture, tileMap.get(layer).get(tile).x, tileMap.get(layer).get(tile).y);
+				batch.draw(tileMap.get(layer).get(tile).getTileTexture(), tileMap.get(layer).get(tile).getX(), tileMap.get(layer).get(tile).getY());
 			}
 		}
 		batch.end();
@@ -254,10 +259,56 @@ public class MapDrawer {
 		return originPosition;
 	}
 	
+	private void mapHeight(HashMap<String, Layer> map, TagNode mapTag)
+	{
+		Layer layerData = map.get(mapTag.data.get(0));
+		ArrayList<String> layerMap = layerData.tileMap;
+		int mapHeight = 0;
+		for(int tile = 0; tile < layerMap.size(); tile++){
+			if(!layerMap.get(tile).equals(";"))
+			{
+				continue;
+			}
+			else
+			{
+				mapHeight += tileTexture.get(0).getHeight();
+				//tile--;
+			}
+		}
+		this.mapHeight = mapHeight;
+	}
+	private void mapWidth(HashMap<String, Layer> map, TagNode mapTag)
+	{
+		Layer layerData = map.get(mapTag.data.get(0));
+		ArrayList<String> layerMap = layerData.tileMap;
+		int mapWidth = 0;
+		for(int tile = 0; tile < layerMap.size(); tile++){
+			if(!layerMap.get(tile).equals(";"))
+			{
+				mapWidth += tileTexture.get(0).getWidth();
+			}
+			else
+			{
+				break;
+			}
+		}
+		this.mapWidth = mapWidth;
+	}
+	
+	public int getMapHeight()
+	{
+		return mapHeight;
+	}
+	
+	public int getMapWidth()
+	{
+		return mapWidth;
+	}
+	
 	public void dispose(){
 		for(int layer = 0; layer < tileMap.size(); layer++) {
 			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
-				tileMap.get(layer).get(tile).texture.dispose();;
+				tileMap.get(layer).get(tile).getTileTexture().dispose();;
 			}
 		}
 	}

@@ -61,7 +61,7 @@ public class PlayerGui{
 	    
 	    
 	    
-	    stage = new Stage(this.player.viewport, batch);
+	    stage = new Stage(this.player.getPlayerViewport(), batch);
 	    Gdx.input.setInputProcessor(stage);
 	    
 	    fpsTable = new Table(uiSkin);
@@ -70,18 +70,18 @@ public class PlayerGui{
 	    labelStyle.font = font;
 	    
 	    fpsLabel = createLabel(getFps(), labelStyle, fpsTable);
-	    fpsTable.setSize(100, 20);
+	    fpsTable.setSize(whatValueIsPercentage(7, Gdx.graphics.getWidth()), whatValueIsPercentage(3, Gdx.graphics.getHeight()));
 	    stage.addActor(fpsTable);
 	    
 	    
 	    positionLabel = createLabel(player.getX() + ", " + player.getY(), labelStyle, fpsTable);
-	    positionLabel.setSize(100, 20);
+	    positionLabel.setSize(whatValueIsPercentage(7, Gdx.graphics.getWidth()), whatValueIsPercentage(3, Gdx.graphics.getHeight()));
 	    positionLabel.setVisible(false);
 	    stage.addActor(positionLabel);
 	    
 	    buttonContainer = new Container<Actor>(); 
 	    buttonContainer.setActor(menuButton);
-	    buttonContainer.size(50,50);
+	    buttonContainer.size(whatValueIsPercentage(4, Gdx.graphics.getWidth()), whatValueIsPercentage(7, Gdx.graphics.getHeight()));
 	    
 	    stage.addActor(buttonContainer);
 	    
@@ -101,7 +101,7 @@ public class PlayerGui{
 	   
 	    
 	    barContainer = new Container<Actor>();
-	    barContainer.setSize(Gdx.graphics.getWidth() / 1.5f, 70);
+	    barContainer.setSize(whatValueIsPercentage(32, Gdx.graphics.getWidth()),whatValueIsPercentage(9, Gdx.graphics.getHeight()));
 	    barContainer.background(uiSkin.newDrawable("Windows/top_bar"));
 	    
 	    stage.addActor(barContainer);
@@ -136,17 +136,17 @@ public class PlayerGui{
 		
 		//FPS label update
 		fpsLabel.setText(getFps());
-		fpsTable.setPosition(player.getX() + 90 ,player.getY() + 285);
+		fpsTable.setPosition(player.getX() + whatValueIsPercentage(7, Gdx.graphics.getWidth()), player.getY() + whatValueIsPercentage(43, Gdx.graphics.getHeight()));
 		
 		positionLabel.setText(player.getX() + ", " + player.getY());
-		positionLabel.setPosition(player.getCam().position.x + 400, player.getCam().position.y + 300);
+		positionLabel.setPosition(player.getCam().position.x + whatValueIsPercentage(29, Gdx.graphics.getWidth()), player.getCam().position.y + whatValueIsPercentage(45, Gdx.graphics.getHeight()));
 		
-		buttonContainer.setPosition(player.getX() - 180, player.getY() + 295);
+		buttonContainer.setPosition(player.getX() - whatValueIsPercentage(13, Gdx.graphics.getWidth()), player.getY() + whatValueIsPercentage(44.5f, Gdx.graphics.getHeight()));
 		
 		barContainer.toBack();
-		barContainer.setPosition(player.getX() - 230, player.getY() + 260);
+		barContainer.setPosition(player.getX() - whatValueIsPercentage(17, Gdx.graphics.getWidth()), player.getY() + whatValueIsPercentage(40, Gdx.graphics.getHeight()));
 		
-		menuGui.getGroup().setPosition(player.getX()-340, player.getY()- 260);
+		menuGui.getGroup().setPosition(player.getX()-whatValueIsPercentage(25, Gdx.graphics.getWidth()), player.getY()- whatValueIsPercentage(34, Gdx.graphics.getHeight()));
 		
 			Boolean isPressedESC = Gdx.input.isKeyJustPressed(Keys.ESCAPE);
 		    if(isPressedESC){
@@ -166,7 +166,7 @@ public class PlayerGui{
 			//Apenas para debug.
 			if(showHitBoxes) {
 				
-				debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);
+				debugRenderer.render(player.getPlayerWorld(), player.getCam().combined);
 				
 				fpsTable.debugAll(); 
 				
@@ -177,6 +177,11 @@ public class PlayerGui{
 				positionLabel.setVisible(!positionLabel.isVisible());
 			}		
 		}
+	
+	private float whatValueIsPercentage(float percentage, float maxValue100)
+	{
+		return (percentage * maxValue100) / 100;
+	}
 	
 	public void dispose(){
 		font.dispose();
