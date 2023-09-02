@@ -147,6 +147,11 @@ public class MenuGui {
 		return isFpsActive;
 	}
 
+	public void dispose(){
+		font.dispose();
+		menuSkin.dispose();
+	}
+	
 	public Actor getGroup(){
 		return menuGroup;
 	}	

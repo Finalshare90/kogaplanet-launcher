@@ -55,8 +55,7 @@ public class MapDrawer {
 		
 	Reader reader;
 	
-	public MapDrawer(SpriteBatch batch){
-		this.batch = batch;
+	public MapDrawer(){
 		verifyDirectory();
 	}
 	
@@ -96,8 +95,8 @@ public class MapDrawer {
 		// i'm too lazy to handle it:)
 		try {
 			
-		// Create *some* tiles physics by receiving the current tile layer and his raw tag data.
-		loadBodies(map, tileMap, mapTag);
+			// Create *some* tiles physics by receiving the current tile layer and his raw tag data.
+			loadBodies(map, tileMap, mapTag);
 		
 		
 		}catch (Exception e) {
@@ -111,8 +110,8 @@ public class MapDrawer {
 	private void defineSpawnpoint(){	
 		
 		try {
-		originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
-		originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
+			originPosition.x = Integer.parseInt(handler.call("spawnpoint").data.get(0));
+			originPosition.y = Integer.parseInt(handler.call("spawnpoint").data.get(1));
 		
 		}catch (NullPointerException e) {
 			System.err.println("spawnpoint not found, setting spawnpoint to 0,0");
@@ -162,10 +161,10 @@ public class MapDrawer {
  				}
 			
  				else{
-				layerMap.remove(tile);
-				currentTileX = 0;
-				currentTileY = currentTileY - tileTexture.get(0).getHeight();
-				tile--;
+ 					layerMap.remove(tile);
+ 					currentTileX = 0;
+ 					currentTileY = currentTileY - tileTexture.get(0).getHeight();
+ 					tile--;
 				}
 			}
  		}
@@ -255,6 +254,13 @@ public class MapDrawer {
 		return originPosition;
 	}
 	
+	public void dispose(){
+		for(int layer = 0; layer < tileMap.size(); layer++) {
+			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
+				tileMap.get(layer).get(tile).texture.dispose();;
+			}
+		}
+	}
 }
 	
 

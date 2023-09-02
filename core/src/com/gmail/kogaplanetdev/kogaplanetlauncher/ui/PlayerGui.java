@@ -38,10 +38,10 @@ public class PlayerGui{
 	TextureAtlas uiTexture = new TextureAtlas("misc/HarmonyUI.atlas");
 	Skin uiSkin = new Skin(uiTexture);
 
-	Label fpsLabel;
+	Label fpsLabel, positionLabel;
 	LabelStyle labelStyle;
 	
-	Button kgpButton = createButton(uiSkin, "Buttons/menu", "Buttons/menu_down");
+	Button menuButton = createButton(uiSkin, "Buttons/menu", "Buttons/menu_down");
 	
 	MenuGui menuGui;
 	
@@ -71,20 +71,25 @@ public class PlayerGui{
 	    
 	    fpsLabel = createLabel(getFps(), labelStyle, fpsTable);
 	    fpsTable.setSize(100, 20);
-	    
 	    stage.addActor(fpsTable);
 	    
+	    
+	    positionLabel = createLabel(player.getX() + ", " + player.getY(), labelStyle, fpsTable);
+	    positionLabel.setSize(100, 20);
+	    positionLabel.setVisible(false);
+	    stage.addActor(positionLabel);
+	    
 	    buttonContainer = new Container<Actor>(); 
-	    buttonContainer.setActor(kgpButton);
+	    buttonContainer.setActor(menuButton);
 	    buttonContainer.size(50,50);
 	    
 	    stage.addActor(buttonContainer);
 	    
 	    menuGui = new MenuGui(uiSkin, stage, fpsTable, player);
 	    
-	    kgpButton.getClickListener();
+	    menuButton.getClickListener();
 	    //ButtonActionListener 
-	    kgpButton.addListener(new ClickListener(){
+	    menuButton.addListener(new ClickListener(){
 	    	
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
@@ -133,6 +138,9 @@ public class PlayerGui{
 		fpsLabel.setText(getFps());
 		fpsTable.setPosition(player.getX() + 90 ,player.getY() + 285);
 		
+		positionLabel.setText(player.getX() + ", " + player.getY());
+		positionLabel.setPosition(player.getCam().position.x + 400, player.getCam().position.y + 300);
+		
 		buttonContainer.setPosition(player.getX() - 180, player.getY() + 295);
 		
 		barContainer.toBack();
@@ -157,17 +165,23 @@ public class PlayerGui{
 			isPressedF1 = Gdx.input.isKeyJustPressed(Keys.F1);
 			//Apenas para debug.
 			if(showHitBoxes) {
-				debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);	
+				
+				debugRenderer.render(KogaPlanetLauncher.WORLD, player.getCam().combined);
+				
 				fpsTable.debugAll(); 
+				
 			}else {fpsTable.setDebug(false); fpsLabel.setDebug(false);}
+			
 			if(isPressedF1) {
 				showHitBoxes = !showHitBoxes;
+				positionLabel.setVisible(!positionLabel.isVisible());
 			}		
 		}
 	
 	public void dispose(){
 		font.dispose();
 		stage.dispose();
+		menuGui.dispose();
 	}
 	
 }

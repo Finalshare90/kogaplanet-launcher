@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Player{
 		
 	// Sprite Buffer, stores the Sprite, and flushes him to the game.
-	private SpriteBatch Batch; 
 	private String AtlasSprites[] = new String[4]; //outra gambiarra, ele vai armazenar os nomes de cada sprite do spritesheet
 	private TextureAtlas idleJames;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 
 	private Sprite currentSprite;
@@ -51,9 +50,8 @@ public class Player{
 	public boolean isPressedW, isPressedS, isPressedA, isPressedD;
 
 	
-	 public Player(SpriteBatch Batch, TextureAtlas idleJames, TextureAtlas walkingJames){
+	 public Player(TextureAtlas idleJames, TextureAtlas walkingJames){
 		
-		this.Batch = Batch;
 		this.idleJames = idleJames;
 		this.walkingJamesAtlas = walkingJames;
 		
@@ -131,7 +129,7 @@ public class Player{
 	  intera��o jogo-�suario
 	 */
 	String lastInput = "s";
-	public void update(){		
+	public void update(SpriteBatch Batch){		
 		/*
 		 sempre que for editar uma tecla, ou desenhar algo novo em player, coloque
 		 dentro do fluxo "Batch".
@@ -259,8 +257,9 @@ public class Player{
 		AtlasSprites[SpritePos] = SpriteName;
 	}
 	
-		public void setAtlas(TextureAtlas atlas) {
-		this.idleJames = atlas;
+	public void dispose() {
+		walkingJamesAtlas.dispose();
+		idleJames.dispose();
 	}
 	
 	public float getY() {
