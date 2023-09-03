@@ -20,11 +20,8 @@ import finalshare.tileReader.essentials.Reader;
 
 public class MapDrawer {
 
-	private SpriteBatch batch;
 	private ArrayList<Texture> tileTexture;
 	private ArrayList<List<Tile>> tileMap = new ArrayList<List<Tile>>();	
-	private String textures;
-	private Texture blank = new Texture("misc/blank.png");
 	private Vector2 originPosition = new Vector2();
 	private TagHandler handler;
 	private TagNode mapTag;
@@ -54,9 +51,7 @@ public class MapDrawer {
 	
 	public String dir = System.getProperty("user.home") + File.separator + "Documents" +
 	File.separator + "KogaPlanetLauncher"+ File.separator + "games" + File.separator + mapName;
-		
-	private Reader reader;
-	
+			
 	public MapDrawer(World WORLD){
 		this.WORLD = WORLD;
 		verifyDirectory();
@@ -90,8 +85,10 @@ public class MapDrawer {
 		defineSpawnpoint();
 		
 		texturesFactory();
+		
 		mapHeight(map, mapTag);
 		mapWidth(map, mapTag);
+		
 		// Produces each tile instance, not the body or his texture,
 		// just both the instance and his position. 
 		calculateTilePos(map, mapTag);

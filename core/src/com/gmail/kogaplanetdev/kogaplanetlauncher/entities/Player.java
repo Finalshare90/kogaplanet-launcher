@@ -1,13 +1,10 @@
 package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 
-import java.io.File;
 import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
 
 public class Player{
 		
@@ -84,7 +80,7 @@ public class Player{
 		
 		//Cria um sprite que vai ser usado quando nenhuma tecla estiver pressionada
 		currentSprite = idleJames.createSprite(defaultSprite);
-		cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new OrthographicCamera(1366,706);
 		//cria um retangulo que vai servir como "detector de colis�o"
 		viewport = new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
 		

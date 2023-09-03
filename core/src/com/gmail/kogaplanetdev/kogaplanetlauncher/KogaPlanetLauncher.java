@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -27,7 +26,6 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	private FPSLogger fpsLogger;
 	
 	// Assets
-	private Texture logoKGP;
 	private TextureAtlas idleJames, walkingJames;
 	private SpriteBatch entitiesBatch;
 	private PlayerGui gui;
