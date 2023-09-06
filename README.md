@@ -1,6 +1,6 @@
 # kogaplanet-launcher
 
-![KoGaPlanet Banner](https://i.imgur.com/i8WUeWK.jpeg)
+![KoGaPlanet Banner](https://i.imgur.com/WALlvRg.jpg)
 FOSS game about creating other games with own markup language and scripting language.
 
 In KoGaPlanet users create and share their games, being able to modify the games of other users as well.
