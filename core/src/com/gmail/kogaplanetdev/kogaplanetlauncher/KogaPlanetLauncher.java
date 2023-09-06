@@ -92,8 +92,8 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 		gui.update(entitiesBatch);
 		gui.update(debugRenderer);
 		
-		
-		
+		System.out.println(Gdx.graphics.getWidth());
+		System.out.println(Gdx.graphics.getHeight());
 	}
 	@Override
 	public void dispose () {

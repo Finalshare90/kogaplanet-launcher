@@ -128,7 +128,7 @@ public class MapDrawer {
 		tileTexture = new ArrayList<Texture>();
 		
 		// Tag containing the path's to insert inside of tileTexture
-		TagNode tiles = handler.call("symbol");
+		TagNode tiles = handler.call("assets");
 		
 		// Put the data of a tag together inside of tileTexture
 		for (int c = 0; c < tiles.data.size(); c++) {
@@ -180,10 +180,10 @@ public class MapDrawer {
 			Layer layerData = map.get(mapTag.data.get(layer));
 			ArrayList<String> layerMap = layerData.tileMap;
 		
-			for(int mapSymbol = 0; mapSymbol < tileMap.get(layer).size(); mapSymbol++){
-				if(!layerMap.get(mapSymbol).equals(";") && !layerMap.get(mapSymbol).equals("B")){
+			for(int mapTile = 0; mapTile < tileMap.get(layer).size(); mapTile++){
+				if(!layerMap.get(mapTile).equals(";") && !layerMap.get(mapTile).equals("B")){
 					// creates and put the textures in-order
-					tileMap.get(layer).get(mapSymbol).setTileTexture(tileTexture.get(Integer.parseInt(layerMap.get(mapSymbol))));					
+					tileMap.get(layer).get(mapTile).setTileTexture(tileTexture.get(Integer.parseInt(layerMap.get(mapTile))));					
 					}
 				}
 			}
@@ -207,10 +207,10 @@ public class MapDrawer {
 			for(int tile = 0; tile < tileMap.get(layer).size(); tile++){
 				if(!layerMap.get(tile).equals(";") && !layerMap.get(tile).equals("B")){
 			
-					// Current tile symbol, the little number in the map, not the map position. 
-					int currentSymbol = Integer.parseInt(layerMap.get(tile));
+					// Current tile asset, the little number in the map, not the map position. 
+					int currentAsset = Integer.parseInt(layerMap.get(tile));
 			
-					// Checks if the symbol it is inside "collidable" Tag
+					// Checks if the tile assets(for now his identifier) it is inside "collidable" Tag
 					if(collidableTag.contains(layerMap.get(tile))) {
 						tileMap.get(layer).get(tile).setIsCollidable(true);
 					}else{
@@ -218,7 +218,7 @@ public class MapDrawer {
 					}
 			
 					// Put the textures, bodies and the tiles together
-					tileMap.get(layer).get(tile).setTileTexture(tileTexture.get(currentSymbol));
+					tileMap.get(layer).get(tile).setTileTexture(tileTexture.get(currentAsset));
 					tileMap.get(layer).get(tile).createBody();
 				}
 			}
