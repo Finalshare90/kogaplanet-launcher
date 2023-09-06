@@ -1,16 +1,5 @@
 package com.gmail.kogaplanetdev.kogaplanetlauncher.entities;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gmail.kogaplanetdev.kogaplanetlauncher.KogaPlanetLauncher;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -18,11 +7,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Player{
 		
-	//SpriteBatch, armazene uma instancia aqui para poder desenhar o player
-	private SpriteBatch Batch; 
+	// Sprite Buffer, stores the Sprite, and flushes him to the game.
 	private String AtlasSprites[] = new String[4]; //outra gambiarra, ele vai armazenar os nomes de cada sprite do spritesheet
 	private TextureAtlas idleJames;	// Esse carinha serve justamente para armazenar o nosso .atlas(spritesheet) 
 	private Sprite currentSprite;
@@ -31,32 +30,35 @@ public class Player{
 	private HashMap<String, Sprite> idleSprites = new HashMap<>();
 	
 	private OrthographicCamera cam;
-	public Viewport viewport;
+	private Viewport viewport;
+
+	private World WORLD;
 	
 	private Vector2 position;
-	public Vector2 originPosition = new Vector2();
+	private Vector2 originPosition = new Vector2();
+	private int mapHeight, mapWidth;
 	
 	// Esses atributos s� v�o ser usados no CollsionHandler.
-	HashMap<String, Object> fixtureData = new HashMap<>();	
+	private HashMap<String, Object> fixtureData = new HashMap<>();	
 	
 	//f�sica
-	 Body body;
-	 BodyDef bodyDef;
-	 Fixture fixture;
-	 PolygonShape poly;
-	 FixtureDef fixtureDef;
-	
+	private Body body;
+	private BodyDef bodyDef;
+	private Fixture fixture;
+	private PolygonShape poly;
+	private FixtureDef fixtureDef;
 	
 	//gambiarra pura, n�o toque, s� saiba que � os listerners de teclas 
 	public boolean isPressedW, isPressedS, isPressedA, isPressedD;
 
 	
-	 public Player(SpriteBatch Batch, TextureAtlas idleJames, TextureAtlas walkingJames){
+	 public Player(TextureAtlas idleJames, TextureAtlas walkingJames, World WORLD, int mapHeight, int mapWidth){
 		
-		this.Batch = Batch;
 		this.idleJames = idleJames;
 		this.walkingJamesAtlas = walkingJames;
-		
+		this.WORLD = WORLD;
+		this.mapHeight = mapHeight;
+		this.mapWidth = mapWidth;
 		position = new Vector2();
 		
 	 }
@@ -109,7 +111,7 @@ public class Player{
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
-		body = KogaPlanetLauncher.WORLD.createBody(bodyDef);
+		body = WORLD.createBody(bodyDef);
 		poly = new PolygonShape();
 		poly.setAsBox(idleSprites.get("w").getWidth(),idleSprites.get("w").getHeight());
 		
@@ -131,7 +133,7 @@ public class Player{
 	  intera��o jogo-�suario
 	 */
 	String lastInput = "s";
-	public void update(){		
+	public void update(SpriteBatch Batch){		
 		/*
 		 sempre que for editar uma tecla, ou desenhar algo novo em player, coloque
 		 dentro do fluxo "Batch".
@@ -147,7 +149,7 @@ public class Player{
 		cam.position.y = position.y;
 		viewport.setScreenY((int)cam.position.y);
 		viewport.setScreenX((int)cam.position.x);
-
+		
 		cam.update();
 	 	viewport.update(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	 	
@@ -259,8 +261,19 @@ public class Player{
 		AtlasSprites[SpritePos] = SpriteName;
 	}
 	
-		public void setAtlas(TextureAtlas atlas) {
-		this.idleJames = atlas;
+	public void dispose() {
+		walkingJamesAtlas.dispose();
+		idleJames.dispose();
+	}
+	
+	public World getPlayerWorld()
+	{
+		return WORLD;
+	}
+	
+	public Viewport getPlayerViewport()
+	{
+		return viewport;
 	}
 	
 	public float getY() {

@@ -18,7 +18,7 @@ public class DesktopLauncher {
 		config.setResizable(true);
 		config.setMaximized(true);
 		config.setWindowIcon("logos/256x_kgp.png");
-		config.setTitle("KogaPlanet Launcher 3.0.1 alpha(Build Abyssinian) " + jokes.chooseAjoke());	
+		config.setTitle("KogaPlanet Launcher 3.3.4 alpha(Build Abyssinian) " + jokes.chooseAjoke());	
 		
 		new Lwjgl3Application(new KogaPlanetLauncher(), config);
 	}

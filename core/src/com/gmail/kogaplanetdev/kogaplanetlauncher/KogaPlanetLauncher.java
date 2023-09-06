@@ -4,18 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.gmail.kogaplanetdev.kogaplanetlauncher.entities.MapDrawer;
@@ -25,62 +17,51 @@ import com.gmail.kogaplanetdev.kogaplanetlauncher.ui.PlayerGui;
 
 public class KogaPlanetLauncher extends ApplicationAdapter {
 	
-	// entidades
+	//Values
+	
+	// Entities
 	private Player player;
 	
 	// Mover para uma classe de entidade
-	Rectangle rectangle;
-	FPSLogger fpsLogger;
+	private FPSLogger fpsLogger;
 	
 	// Assets
-	Texture logoKGP;
-	TextureAtlas idleJames, walkingJames;
-	SpriteBatch entitiesBatch;
-    Sprite KogaSprite;
-	PlayerGui gui;
-	MapDrawer mapDrawer;
+	private TextureAtlas idleJames, walkingJames;
+	private SpriteBatch entitiesBatch;
+	private PlayerGui gui;
+	private MapDrawer mapDrawer;
 	
     // Physics go brrr haha
-    public static World WORLD;
-    BodyDef bodyDef;
-    PolygonShape poly;
-    Body body;
-    FixtureDef fixtureDef;
-    Fixture fixture;
-    Box2DDebugRenderer debugRenderer;
+	private final World WORLD = new World(new Vector2(0 , 0), true);;   
+    private Box2DDebugRenderer debugRenderer;
    
 	@Override
 	public void create () {
 		
-		// Cria��o do mundo
-		WORLD = new World(new Vector2(0 , 0), true);	
+		// The physic simulation world.	
 		
-		// S� para usar como efeito de compara��o, inutil, mas legal deixar
 		fpsLogger = new FPSLogger();
 		
-		// Gr�ficos
+		// Assets
 		entitiesBatch = new SpriteBatch();
 		idleJames = new TextureAtlas("sprites/james/james_idle.atlas");	
 		walkingJames = new TextureAtlas("sprites/james/james_walking.atlas");
-		
-		logoKGP = new Texture("logos/256x_kgp.png");
-		KogaSprite = new Sprite(logoKGP);
-		
-		// Sistema de tiles
-		mapDrawer = new MapDrawer(entitiesBatch);
+				
+		// Tile System
+		mapDrawer = new MapDrawer(WORLD);
 		mapDrawer.loadMap();
 	
-		// passe o nome de cada sprite armazenado no atlas ao player(4 no total)
-		player = new Player(entitiesBatch, idleJames, walkingJames);
+		// TODO: do a better way of loading graphics into the player.
+		player = new Player(idleJames, walkingJames, WORLD, mapDrawer.getMapHeight(), mapDrawer.getMapWidth());
 		String SpritesNames[] = {"Idle_back","Idle_front","Idle_right","Idle_left"};
 		player.create(mapDrawer.getOriginPosition(), SpritesNames[1]);		
 		
-		// Boas pr�ticas em locais errados.java 
+		// what the fuck is this?
 		for(int count = 0; count < SpritesNames.length ; count++){
-		player.setAtlasSprites(count, SpritesNames[count]);
+			player.setAtlasSprites(count, SpritesNames[count]);
 		}
 		
-		// Classe de User interface:)
+		// User GUI:)
 		gui = new PlayerGui(entitiesBatch, player);
 
 		// debug
@@ -94,28 +75,29 @@ public class KogaPlanetLauncher extends ApplicationAdapter {
 	@Override
 	public void render () {
 	
+		// Simulate the world physics
 		WORLD.step(Gdx.graphics.getDeltaTime(), 8, 3);
 			
-		//Utilidades para debug
+		// Debug utils:)
 		ScreenUtils.clear(Color.SLATE);
 		fpsLogger.log();
 		
-		//Renderiza cada tile do mapa
+		// Render the map tiles
 		mapDrawer.renderMap(entitiesBatch);
 		
-		// O player come�a a sua pr�pria instancia de renderiza��o.
-		player.update();
+		// Player starts his own render
+		player.update(entitiesBatch);
 		
-		// update de UI
+		// UI update
 		gui.update(entitiesBatch);
 		gui.update(debugRenderer);
-		
-		
-		
 	}
 	@Override
 	public void dispose () {
 		entitiesBatch.dispose();
 		gui.dispose();
+		player.dispose();
+		WORLD.dispose();
+		mapDrawer.dispose();
 	}
 }
