@@ -16,8 +16,6 @@ import com.kogaplanet.lunarlatteMarkupLanguage.Parser;
 import com.kogaplanet.lunarlatteMarkupLanguage.TagNode;
 import com.kogaplanet.lunarlatteMarkupLanguage.api.TagHandler;
 
-import finalshare.tileReader.essentials.Reader;
-
 public class MapDrawer {
 
 	private ArrayList<Texture> tileTexture;
